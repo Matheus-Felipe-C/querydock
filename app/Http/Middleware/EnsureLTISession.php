@@ -15,10 +15,23 @@ class EnsureLTISession
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(!session('lti_authenticated')) {
-            abort(400, 'Unauthorized LTI access');
+
+        // Allow static assets
+        if (
+            $request->is('build/*') ||
+            $request->is('build/assets/*') ||
+            $request->is('resources/*') ||
+            $request->is('js/*') ||
+            $request->is('css/*') ||
+            $request->is('favicon.ico')
+        ) {
+            return $next($request);
         }
-    
+
+        if (!session('lti_authenticated')) {
+            abort(403, 'Unauthorized LTI access');
+        }
+
         return $next($request);
     }
 }

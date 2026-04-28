@@ -3,9 +3,14 @@
 use App\Http\Controllers\AppController;
 use App\Http\Middleware\EnsureLTISession;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', function () {
-    return inertia('Home');
+    return Inertia::render('Home', [
+        'user' => [
+            'name' => 'Test user',
+        ]
+    ]);
 })->name('welcome');
 
 // Public (LTI entry)
@@ -13,6 +18,5 @@ Route::any('/lti', [App\Http\Controllers\LTIController::class, 'ltiMessage']);
 Route::get('/lti/jwks', [App\Http\Controllers\LTIController::class, 'getJWKS']);
 
 //General app route for now
-Route::middleware(['web', EnsureLTISession::class])->group(function () {
-    Route::get('/app', [AppController::class, 'index']);
-});
+Route::get('/app', [AppController::class, 'index'])
+    ->middleware(EnsureLTISession::class);

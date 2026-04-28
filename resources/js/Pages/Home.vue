@@ -1,11 +1,11 @@
 <script setup>
 defineProps({
-  user: Object
+  user_id: String
 })
 </script>
 
 <template>
   <div>
-    <h1>Hello {{ user.name }}</h1>
+    <h1>Hello there it works: {{ user_id }}</h1>
   </div>
 </template>
