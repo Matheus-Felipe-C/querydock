@@ -39,6 +39,8 @@ class LTIController extends Controller
                     'resource_link_id' => $tool->resourceLink?->getRecordId(),
                 ]);
 
+                dd($tool->userResult);
+
                 return redirect('/app');
             }
 
