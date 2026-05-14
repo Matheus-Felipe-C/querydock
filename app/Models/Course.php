@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use ceLTIc\LTI\Platform;
+use App\Models\LtiPlatform;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +14,7 @@ class Course extends Model
 
     public function platform()
     {
-        return $this->belongsTo(Platform::class, 'lti_platform_id');
+        return $this->belongsTo(LtiPlatform::class, 'lti_platform_id');
     }
 
     public function users()
