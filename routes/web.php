@@ -19,4 +19,5 @@ Route::get('/lti/jwks', [App\Http\Controllers\LTIController::class, 'getJWKS']);
 
 //General app route for now
 Route::get('/app', [AppController::class, 'index'])
-    ->middleware(EnsureLTISession::class);
+    ->middleware(EnsureLTISession::class)
+    ->name('app');
