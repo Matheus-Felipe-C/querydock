@@ -9,6 +9,11 @@ import Label from '@/components/ui/label/Label.vue';
 import Textarea from '@/components/ui/textarea/Textarea.vue';
 import { Input } from '@/components/ui/input';
 import QuestionCard from '@/components/ui/quiz/QuestionCard.vue';
+import AppLayout from '@/components/layout/AppLayout.vue';
+
+defineOptions({
+  layout: AppLayout,
+})
 
 const quizTitleId = useId();
 const timeLimitId = useId();
@@ -16,8 +21,7 @@ const instructionsId = useId();
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center">
-    <div class="w-full max-w-3xl flex flex-col gap-6">
+    <div class="w-full max-w-3xl mx-auto flex flex-col gap-6 py-6">
       <!-- Heading section-->
       <div class="flex items-start justify-between">
         <div>
@@ -36,7 +40,7 @@ const instructionsId = useId();
           <CardTitle>Quiz Configuration</CardTitle>
         </CardHeader>
         <CardContent class="space-y-6">
-  
+
           <!-- Quiz title + Time limit -->
           <div class=" grid grid-cols-3 gap-4">
             <div class="col-span-2 space-y-2">
@@ -50,7 +54,7 @@ const instructionsId = useId();
               <Input :id="timeLimitId" type="number" placeholder="Optional" />
             </div>
           </div>
-  
+
           <!-- Instructions -->
           <div class="space-y-2">
             <Label :for="instructionsId">
@@ -64,5 +68,4 @@ const instructionsId = useId();
 
       <QuestionCard></QuestionCard>
     </div>
-  </div>
 </template>
