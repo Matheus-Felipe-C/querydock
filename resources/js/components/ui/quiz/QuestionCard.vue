@@ -15,7 +15,7 @@ const gradeWeightId = useId();
 <template>
     <Card>
         <!-- Question header -->
-        <div class="flex items-center justify-between px-4 py-3 border-b">
+        <div class="flex items-center justify-between px-4 border-b">
             <div class="flex items-center gap-2">
                 <GripVertical class="w-4 h-4 text-muted-foreground cursor-grab"></GripVertical>
                 <span class="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
@@ -73,6 +73,6 @@ const gradeWeightId = useId();
                 </div>
             </div>
         </CardContent>
-        <AddNewItem label="Add new question"></AddNewItem>
     </Card>
+    <AddNewItem label="Add new question"></AddNewItem>
 </template>
