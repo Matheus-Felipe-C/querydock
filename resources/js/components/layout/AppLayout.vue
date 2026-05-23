@@ -1,7 +1,9 @@
 <!-- Layouts/AppLayout.vue -->
 <script setup lang="ts">
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar'
+import Input from '../ui/input/Input.vue';
 import AppSidebar from '@/components/AppSidebar.vue'
+import { Moon, Bell } from 'lucide-vue-next';
 </script>
 
 <template>

@@ -7,7 +7,6 @@ import SidebarGroupContent from './ui/sidebar/SidebarGroupContent.vue';
 import SidebarHeader from './ui/sidebar/SidebarHeader.vue';
 import SidebarMenu from './ui/sidebar/SidebarMenu.vue';
 import SidebarMenuItem from './ui/sidebar/SidebarMenuItem.vue';
-import SidebarProvider from './ui/sidebar/SidebarProvider.vue';
 import SidebarMenuButton from './ui/sidebar/SidebarMenuButton.vue';
 import SidebarFooter from './ui/sidebar/SidebarFooter.vue';
 import Button from './ui/button/Button.vue';
