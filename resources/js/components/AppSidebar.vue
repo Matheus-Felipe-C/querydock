@@ -15,12 +15,12 @@ import { Link, usePage } from '@inertiajs/vue3';
 const page = usePage();
 
 const navItems = [
-    {label: 'Dashboard', icon: LayoutDashboard, href: '/', active: false},
-    {label: 'Quizzes', icon: BookOpen, href: '/', active: true},
-    {label: 'Question Bank', icon: Database, href: '/quiz/question-bank', active: false},
+    {label: 'Dashboard', icon: LayoutDashboard, href: '/'},
+    {label: 'Quizzes', icon: BookOpen, href: '/quiz'},
+    {label: 'Question Bank', icon: Database, href: '/quiz/question-bank'},
 ]
 
-const isActive = (href: string) => page.url.startsWith(href === '/' ? '/' : href);
+const isActive = (href: string) => page.url === href;
 
 </script>
 
