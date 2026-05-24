@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BookOpen, LayoutDashboard, Plus } from 'lucide-vue-next';
+import { BookOpen, Database, LayoutDashboard, Plus } from 'lucide-vue-next';
 import Sidebar from './ui/sidebar/Sidebar.vue';
 import SidebarContent from './ui/sidebar/SidebarContent.vue';
 import SidebarGroup from './ui/sidebar/SidebarGroup.vue';
@@ -14,6 +14,7 @@ import Button from './ui/button/Button.vue';
 const navItems = [
     {label: 'Dashboard', icon: LayoutDashboard, href: '#', active: false},
     {label: 'Quizzes', icon: BookOpen, href: '#', active: true},
+    {label: 'Question Bank', icon: Database, href: 'quiz/question-bank', active: false},
 ]
 
 </script>
@@ -36,7 +37,7 @@ const navItems = [
                                     :is-active="item.active"
                                     as-child
                                 >
-                                    <a href="item.href" class="flex items-center gap-2">
+                                    <a :href="item.href" class="flex items-center gap-2">
                                         <component :is="item.icon" class="w-4 h-4" />
                                         <span>{{ item.label }}</span>
                                     </a>
