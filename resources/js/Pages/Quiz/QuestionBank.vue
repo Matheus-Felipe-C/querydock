@@ -66,6 +66,9 @@ defineProps<{
         </section> 
         <!-- Question cards section -->
          <section class="grid grid-cols-2 gap-4">
+            <div v-if="questions.length == 0">
+                <h1>No questions found</h1>
+            </div>
             <QuestionBankCard 
                 v-for="question in questions"
                 :key="question.id"

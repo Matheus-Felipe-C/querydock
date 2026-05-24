@@ -36,7 +36,7 @@ defineProps<{
         </CardContent>
         <CardFooter class="flex flex-col p-0">
             <div class="w-11/12 mx-auto border-t"></div>
-            <div class="flex justify-between items-center w-full px-6 py-4">
+            <div class="flex justify-between items-center w-full px-6 mt-4">
                 <span class="text-muted-foreground">Created at</span>
                 <div class="flex items-center gap-2">
                     <Eye class="w-8 h-8 px-1 hover:bg-gray-200" />
