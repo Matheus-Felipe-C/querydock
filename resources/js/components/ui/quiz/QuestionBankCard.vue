@@ -7,10 +7,11 @@ import CardHeader from '../card/CardHeader.vue';
 import CardTitle from '../card/CardTitle.vue';
 import Button from '../button/Button.vue';
 import Badge from '../badge/Badge.vue';
+import { Question } from '@/types/question';
 
-defineProps({
-    question: Object,
-})
+defineProps<{
+    question: Question
+}>();
 
 </script>
 
@@ -19,14 +20,12 @@ defineProps({
         <!-- Question header -->
         <CardHeader>
             <div class="flex justify-between">
-                <CardTitle>Monthly revenue calculation</CardTitle>
+                <CardTitle>{{ question.title }}</CardTitle>
                 <Badge class="bg-yellow-100 text-yellow-700 hover:bg-yellow-200 px-2 py-1">MEDIUM</Badge>
             </div>
             <!-- Question tags -->
             <div class="flex flex-wrap gap-2">
-                <Badge variant="secondary">Aggregations</Badge>
-                <Badge variant="secondary">GROUP BY</Badge>
-                <Badge variant="secondary">DATE functions</Badge>
+                <Badge variant="secondary" v-for="tag in question.tags">{{ tag }}</Badge>
             </div>
         </CardHeader>
         <CardContent>

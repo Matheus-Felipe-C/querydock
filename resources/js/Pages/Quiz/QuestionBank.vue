@@ -8,10 +8,15 @@ import NativeSelect from '@/components/ui/native-select/NativeSelect.vue';
 import NativeSelectOption from '@/components/ui/native-select/NativeSelectOption.vue';
 import QuestionBankCard from '@/components/ui/quiz/QuestionBankCard.vue';
 import { Plus, SearchIcon, X } from 'lucide-vue-next';
+import { Question } from '@/types/question';
 
 defineOptions({
     layout: AppLayout,
 })
+
+defineProps<{
+    questions: Question[]
+}>();
 </script>
 
 <template>
@@ -61,7 +66,11 @@ defineOptions({
         </section> 
         <!-- Question cards section -->
          <section class="grid grid-cols-2 gap-4">
-            <QuestionBankCard></QuestionBankCard>
+            <QuestionBankCard 
+                v-for="question in questions"
+                :key="question.id"
+                :question="question"
+            />
          </section>
     </div>
 </template>

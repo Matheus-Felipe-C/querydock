@@ -10,12 +10,17 @@ import SidebarMenuItem from './ui/sidebar/SidebarMenuItem.vue';
 import SidebarMenuButton from './ui/sidebar/SidebarMenuButton.vue';
 import SidebarFooter from './ui/sidebar/SidebarFooter.vue';
 import Button from './ui/button/Button.vue';
+import { Link, usePage } from '@inertiajs/vue3';
+
+const page = usePage();
 
 const navItems = [
-    {label: 'Dashboard', icon: LayoutDashboard, href: '#', active: false},
-    {label: 'Quizzes', icon: BookOpen, href: '#', active: true},
-    {label: 'Question Bank', icon: Database, href: 'quiz/question-bank', active: false},
+    {label: 'Dashboard', icon: LayoutDashboard, href: '/', active: false},
+    {label: 'Quizzes', icon: BookOpen, href: '/', active: true},
+    {label: 'Question Bank', icon: Database, href: '/quiz/question-bank', active: false},
 ]
+
+const isActive = (href: string) => page.url.startsWith(href === '/' ? '/' : href);
 
 </script>
 
@@ -34,13 +39,13 @@ const navItems = [
                         <SidebarMenu>
                             <SidebarMenuItem v-for="item in navItems" :key="item.label">
                                 <SidebarMenuButton
-                                    :is-active="item.active"
+                                    :is-active="isActive(item.href)"
                                     as-child
                                 >
-                                    <a :href="item.href" class="flex items-center gap-2">
+                                    <Link :href="item.href" class="flex items-center gap-2">
                                         <component :is="item.icon" class="w-4 h-4" />
                                         <span>{{ item.label }}</span>
-                                    </a>
+                                    </Link>
                             </SidebarMenuButton>
                             </SidebarMenuItem>
                         </SidebarMenu>
