@@ -9,6 +9,19 @@ import NativeSelectOption from '@/components/ui/native-select/NativeSelectOption
 import QuestionBankCard from '@/components/ui/quiz/QuestionBankCard.vue';
 import { Plus, SearchIcon, X } from 'lucide-vue-next';
 import { Question } from '@/types/question';
+import Dialog from '@/components/ui/dialog/Dialog.vue';
+import DialogTrigger from '@/components/ui/dialog/DialogTrigger.vue';
+import DialogContent from '@/components/ui/dialog/DialogContent.vue';
+import DialogHeader from '@/components/ui/dialog/DialogHeader.vue';
+import DialogTitle from '@/components/ui/dialog/DialogTitle.vue';
+import DialogDescription from '@/components/ui/dialog/DialogDescription.vue';
+import DialogFooter from '@/components/ui/dialog/DialogFooter.vue';
+import DialogClose from '@/components/ui/dialog/DialogClose.vue';
+import Input from '@/components/ui/input/Input.vue';
+import Textarea from '@/components/ui/textarea/Textarea.vue';
+import Label from '@/components/ui/label/Label.vue';
+import ToggleGroup from '@/components/ui/toggle-group/ToggleGroup.vue';
+import ToggleGroupItem from '@/components/ui/toggle-group/ToggleGroupItem.vue';
 
 defineOptions({
     layout: AppLayout,
@@ -17,11 +30,16 @@ defineOptions({
 defineProps<{
     questions: Question[]
 }>();
+
+function handleSubmit(e: Event) {
+    e.preventDefault();
+    // handle form submission
+}
 </script>
 
 <template>
     <div class="w-full mx-auto flex flex-col gap-6 py-6">
-        <!-- Heading section-->
+        <!-- Heading section -->
         <section class="flex items-start justify-between">
             <div>
                 <h1 class="text-3xl font-bold">Question Bank</h1>
@@ -30,21 +48,74 @@ defineProps<{
                 </p>
             </div>
             <div class="flex items-center gap-2">
-                <Button variant="default">
-                    <Plus />
-                    Create New Question
-                </Button>
+                <!-- Dialog for creating a new question -->
+                <Dialog>
+                    <DialogTrigger as-child>
+                        <Button variant="default">
+                            <Plus class="mr-2 h-4 w-4" />
+                            Create New Question
+                        </Button>
+                    </DialogTrigger>
+
+                    <DialogContent class="sm:max-w-lg">
+                        <DialogHeader>
+                            <DialogTitle class="text-lg font-semibold">Create New Question</DialogTitle>
+                            <DialogDescription class="text-sm text-muted-foreground">
+                                Fill in the details below to add a new SQL challenge.
+                            </DialogDescription>
+                        </DialogHeader>
+
+                        <form class="grid gap-5 py-2" @submit.prevent="handleSubmit">
+                            <div class="grid gap-2">
+                                <Label for="question-title">Question Title</Label>
+                                <Input id="question-title" placeholder="e.g. Find the top 5 customers by revenue" />
+                            </div>
+
+                            <div class="grid gap-2">
+                                <Label for="question-description">Description</Label>
+                                <Textarea id="question-description" placeholder="Describe the SQL challenge..."
+                                    class="min-h-25 resize-none" />
+                            </div>
+
+                            <div class="grid gap-2">
+                                <Label>Difficulty</Label>
+                                <ToggleGroup type="single" class="justify-start gap-2">
+                                    <ToggleGroupItem value="easy"
+                                        class="text-green-600 data-[state=on]:bg-green-100 data-[state=on]:text-green-700">
+                                        Easy
+                                    </ToggleGroupItem>
+                                    <ToggleGroupItem value="medium"
+                                        class="text-yellow-600 data-[state=on]:bg-yellow-100 data-[state=on]:text-yellow-700">
+                                        Medium
+                                    </ToggleGroupItem>
+                                    <ToggleGroupItem value="hard"
+                                        class="text-red-600 data-[state=on]:bg-red-100 data-[state=on]:text-red-700">
+                                        Hard
+                                    </ToggleGroupItem>
+                                </ToggleGroup>
+                            </div>
+
+                            <DialogFooter class="pt-2">
+                                <DialogClose as-child>
+                                    <Button type="button" variant="outline">Cancel</Button>
+                                </DialogClose>
+                                <Button type="submit">Create Question</Button>
+                            </DialogFooter>
+                        </form>
+                    </DialogContent>
+                </Dialog>
             </div>
         </section>
-        <!--Search and filtering section -->
-        <section class="w-full h-13 border-2 flex items-center justify-between">
-            <InputGroup class="w-full max-w-sm py-4 ml-4">
+
+        <!-- Search and filtering section -->
+        <section class="w-full flex items-center justify-between gap-4 px-4 py-2 border rounded-lg">
+            <InputGroup class="w-full max-w-sm">
                 <InputGroupInput placeholder="Search for title or keyword..." />
                 <InputGroupAddon>
-                    <SearchIcon />
+                    <SearchIcon class="h-4 w-4" />
                 </InputGroupAddon>
             </InputGroup>
-            <div class="flex justify-around gap-2">
+            <div class="flex items-center gap-2">
                 <NativeSelect>
                     <NativeSelectOption value="">Difficulty</NativeSelectOption>
                     <NativeSelectOption value="easy">Easy</NativeSelectOption>
@@ -56,24 +127,25 @@ defineProps<{
                     <NativeSelectOption value="join">Join</NativeSelectOption>
                     <NativeSelectOption value="group-by">Group By</NativeSelectOption>
                 </NativeSelect>
-                <!-- Could possibly change for a day picker -->
                 <NativeSelect>
                     <NativeSelectOption value="">Date Created</NativeSelectOption>
-                    <NativeSelectOption value="Some date">Some date</NativeSelectOption>
+                    <NativeSelectOption value="newest">Newest First</NativeSelectOption>
+                    <NativeSelectOption value="oldest">Oldest First</NativeSelectOption>
                 </NativeSelect>
-                <Button variant="ghost" class="text-muted-foreground"><X />Clear</Button>
+                <Button variant="ghost" class="text-muted-foreground gap-1">
+                    <X class="h-4 w-4" />
+                    Clear
+                </Button>
             </div>
-        </section> 
+        </section>
+
         <!-- Question cards section -->
-         <section class="grid grid-cols-2 gap-4">
-            <div v-if="questions.length == 0">
-                <h1>No questions found</h1>
+        <section class="grid grid-cols-2 gap-4">
+            <div v-if="questions.length === 0" class="col-span-2 text-center py-12 text-muted-foreground">
+                <p class="text-lg font-medium">No questions found</p>
+                <p class="text-sm">Create your first question to get started.</p>
             </div>
-            <QuestionBankCard 
-                v-for="question in questions"
-                :key="question.id"
-                :question="question"
-            />
-         </section>
+            <QuestionBankCard v-for="question in questions" :key="question.id" :question="question" />
+        </section>
     </div>
 </template>
