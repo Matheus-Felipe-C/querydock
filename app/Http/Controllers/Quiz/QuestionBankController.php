@@ -17,4 +17,18 @@ class QuestionBankController extends Controller
             'questions' => $course->questions,
         ]);
     }
+
+    public function store(Request $request, Course $course)
+    {
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'difficulty' => ['required', 'in:easy,medium,hard'],
+            'topic' => 'array',
+        ]);
+
+        $course->questions()->create($validated);
+
+        return redirect()->back();
+    }
 }

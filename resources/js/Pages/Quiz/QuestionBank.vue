@@ -7,7 +7,7 @@ import InputGroupInput from '@/components/ui/input-group/InputGroupInput.vue';
 import NativeSelect from '@/components/ui/native-select/NativeSelect.vue';
 import NativeSelectOption from '@/components/ui/native-select/NativeSelectOption.vue';
 import QuestionBankCard from '@/components/ui/quiz/QuestionBankCard.vue';
-import { Plus, SearchIcon, X } from 'lucide-vue-next';
+import { Plus, SearchIcon, X, XCircle } from 'lucide-vue-next';
 import { Question } from '@/types/question';
 import Dialog from '@/components/ui/dialog/Dialog.vue';
 import DialogTrigger from '@/components/ui/dialog/DialogTrigger.vue';
@@ -22,18 +22,52 @@ import Textarea from '@/components/ui/textarea/Textarea.vue';
 import Label from '@/components/ui/label/Label.vue';
 import ToggleGroup from '@/components/ui/toggle-group/ToggleGroup.vue';
 import ToggleGroupItem from '@/components/ui/toggle-group/ToggleGroupItem.vue';
+import { Course } from '@/types/course';
+import { useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 defineOptions({
     layout: AppLayout,
 })
 
-defineProps<{
+const props = defineProps<{
+    course: Course
     questions: Question[]
 }>();
 
-function handleSubmit(e: Event) {
-    e.preventDefault();
-    // handle form submission
+const form = useForm({
+    title: '',
+    description: '',
+    difficulty: '',
+    topic: [] as string[],
+})
+
+const topicInput = ref('');
+
+function addTopic() {
+    const value = topicInput.value.trim().toLowerCase();
+
+    if (!value) return;
+
+    if (!form.topic.includes(value)) {
+        form.topic.push(value);
+    }
+
+    topicInput.value = '';
+}
+
+function removeTopic(topic: string) {
+    form.topic = form.topic.filter(t => t !== topic);
+}
+
+function handleSubmit() {    
+    form.post(`/courses/${props.course.id}/questions`, {
+        preserveScroll: true,
+
+        onSuccess: () => {
+            form.reset();
+        }
+    });
 }
 </script>
 
@@ -68,18 +102,18 @@ function handleSubmit(e: Event) {
                         <form class="grid gap-5 py-2" @submit.prevent="handleSubmit">
                             <div class="grid gap-2">
                                 <Label for="question-title">Question Title</Label>
-                                <Input id="question-title" placeholder="e.g. Find the top 5 customers by revenue" />
+                                <Input id="question-title" v-model="form.title" placeholder="e.g. Find the top 5 customers by revenue" />
                             </div>
 
                             <div class="grid gap-2">
                                 <Label for="question-description">Description</Label>
-                                <Textarea id="question-description" placeholder="Describe the SQL challenge..."
+                                <Textarea id="question-description" v-model="form.description" placeholder="Describe the SQL challenge..."
                                     class="min-h-25 resize-none" />
                             </div>
 
                             <div class="grid gap-2">
                                 <Label>Difficulty</Label>
-                                <ToggleGroup type="single" class="justify-start gap-2">
+                                <ToggleGroup type="single" v-model="form.difficulty" class="justify-start gap-2">
                                     <ToggleGroupItem value="easy"
                                         class="text-green-600 data-[state=on]:bg-green-100 data-[state=on]:text-green-700">
                                         Easy
@@ -94,12 +128,30 @@ function handleSubmit(e: Event) {
                                     </ToggleGroupItem>
                                 </ToggleGroup>
                             </div>
+                            <div class="grid gap-2">
+                                <Label>Topic</Label>
+                                <div class="flex flex-wrap gap-2">
+                                    <div 
+                                    v-for="topic in form.topic" 
+                                    :key="topic" 
+                                    class="bg-secondary text-secondary-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm"
+                                    >
+                                    {{ topic }}
+                                    <button type="button" @click="removeTopic(topic)"><XCircle class="h-3 w-3"/></button>
+                                    </div>
+                                </div>
+                                <Input
+                                v-model="topicInput"
+                                placeholder="Type a topic and press enter"
+                                @keydown.enter.prevent="addTopic"
+                                />
+                            </div>
 
                             <DialogFooter class="pt-2">
                                 <DialogClose as-child>
                                     <Button type="button" variant="outline">Cancel</Button>
                                 </DialogClose>
-                                <Button type="submit">Create Question</Button>
+                                <Button type="submit" :disabled="form.processing">Create Question</Button>
                             </DialogFooter>
                         </form>
                     </DialogContent>
