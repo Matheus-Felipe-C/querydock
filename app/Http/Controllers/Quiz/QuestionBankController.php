@@ -25,7 +25,8 @@ class QuestionBankController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'difficulty' => ['required', 'in:easy,medium,hard'],
-            'topic' => 'array',
+            'topics' => 'array',
+            'topics.*' => ['string', 'max:50'],
         ]);
 
         $course->questions()->create($validated);

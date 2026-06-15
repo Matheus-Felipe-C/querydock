@@ -39,7 +39,7 @@ const form = useForm({
     title: '',
     description: '',
     difficulty: '',
-    topic: [] as string[],
+    topics: [] as string[],
 })
 
 const topicInput = ref('');
@@ -49,15 +49,15 @@ function addTopic() {
 
     if (!value) return;
 
-    if (!form.topic.includes(value)) {
-        form.topic.push(value);
+    if (!form.topics.includes(value)) {
+        form.topics.push(value);
     }
 
     topicInput.value = '';
 }
 
 function removeTopic(topic: string) {
-    form.topic = form.topic.filter(t => t !== topic);
+    form.topics = form.topics.filter(t => t !== topic);
 }
 
 function handleSubmit() {    
@@ -133,7 +133,7 @@ function handleSubmit() {
                                 <Label>Topic</Label>
                                 <div class="flex flex-wrap gap-2">
                                     <div 
-                                    v-for="topic in form.topic" 
+                                    v-for="topic in form.topics" 
                                     :key="topic" 
                                     class="bg-secondary text-secondary-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm"
                                     >
