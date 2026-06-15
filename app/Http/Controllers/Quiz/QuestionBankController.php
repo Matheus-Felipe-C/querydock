@@ -14,6 +14,7 @@ class QuestionBankController extends Controller
         $course->load("questions");
 
         return Inertia::render('Quiz/QuestionBank', [
+            'course' => $course,
             'questions' => $course->questions,
         ]);
     }

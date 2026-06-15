@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Course;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,6 +33,19 @@ class EnsureLTISession
         if (!session('lti_authenticated')) {
             abort(403, 'Unauthorized LTI access');
         }
+
+        $user = User::find(session('user_id'));
+
+        if (!$user) {
+            abort(403, 'Unauthorized LTI access');
+        }
+
+        $course = session('course_id')
+            ? Course::find(session('course_id'))
+            : null;
+
+        $request->attributes->set('lti_user', $user);
+        $request->attributes->set('lti_course', $course);
 
         return $next($request);
     }

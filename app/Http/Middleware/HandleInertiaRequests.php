@@ -37,7 +37,8 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            //
+            'course' => fn () => $request->attributes->get('lti_course'),
+            'user' => fn () => $request->attributes->get('lti_user'),
         ];
     }
 }

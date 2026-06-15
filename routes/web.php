@@ -17,8 +17,11 @@ Route::get('/', function () {
 
 Route::get('/quiz', [QuizController::class, 'index'])->name('quiz');
 
-Route::get('/quiz/question-bank', [QuestionBankController::class, 'index'])
+Route::get('/courses/{course}/question-bank', [QuestionBankController::class, 'index'])
     ->name('quiz.question-bank');
+
+Route::post('/courses/{course}/questions', [QuestionBankController::class, 'store'])
+    ->name('courses.questions.store');
 
 // Public (LTI entry)
 Route::any('/lti', [App\Http\Controllers\LTIController::class, 'ltiMessage']);

@@ -11,16 +11,30 @@ import SidebarMenuButton from './ui/sidebar/SidebarMenuButton.vue';
 import SidebarFooter from './ui/sidebar/SidebarFooter.vue';
 import Button from './ui/button/Button.vue';
 import { Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
 const page = usePage();
 
-const navItems = [
-    {label: 'Dashboard', icon: LayoutDashboard, href: '/'},
-    {label: 'Quizzes', icon: BookOpen, href: '/quiz'},
-    {label: 'Question Bank', icon: Database, href: '/quiz/question-bank'},
-]
+const course = computed(() => page.props.course as {id: number | string }| undefined);
 
-const isActive = (href: string) => page.url === href;
+const navItems = computed(() => {
+    const courseId = course.value?.id;
+
+    return [
+        { label: 'Dashboard', icon: LayoutDashboard, href: '/' },
+        { label: 'Quizzes', icon: BookOpen, href: '/quiz'},
+        {
+            label: 'Question Bank',
+            icon: Database,
+            href: `/courses/${courseId}/question-bank`
+        },
+    ];
+});
+
+const isActive = (href: string) => {
+    if (href === '/') return page.url === '/';
+    return page.url.startsWith(href);
+}
 
 </script>
 
