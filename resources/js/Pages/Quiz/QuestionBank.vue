@@ -43,6 +43,7 @@ const form = useForm({
 })
 
 const topicInput = ref('');
+const dialogOpen = ref(false);
 
 function addTopic() {
     const value = topicInput.value.trim().toLowerCase();
@@ -67,6 +68,7 @@ function handleSubmit() {
 
         onSuccess: () => {
             form.reset();
+            dialogOpen.value = false;
         }
     });
 }
@@ -84,7 +86,7 @@ function handleSubmit() {
             </div>
             <div class="flex items-center gap-2">
                 <!-- Dialog for creating a new question -->
-                <Dialog>
+                <Dialog v-model:open="dialogOpen">
                     <DialogTrigger as-child>
                         <Button variant="default">
                             <Plus class="mr-2 h-4 w-4" />
