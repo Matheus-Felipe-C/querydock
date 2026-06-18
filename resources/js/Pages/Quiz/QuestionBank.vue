@@ -25,6 +25,7 @@ import ToggleGroupItem from '@/components/ui/toggle-group/ToggleGroupItem.vue';
 import { Course } from '@/types/course';
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { route } from 'ziggy-js';
 
 defineOptions({
     layout: AppLayout,
@@ -61,16 +62,18 @@ function removeTopic(topic: string) {
     form.topics = form.topics.filter(t => t !== topic);
 }
 
-function handleSubmit() {    
-    console.log(props.course);
-    form.post(`/courses/${props.course?.id}/questions`, {
-        preserveScroll: true,
+function handleSubmit() {
+    form.post(route('courses.questions.store', {
+        course: props.course.id,
+    }),
+        {
+            preserveScroll: true,
 
-        onSuccess: () => {
-            form.reset();
-            dialogOpen.value = false;
-        }
-    });
+            onSuccess: () => {
+                form.reset();
+                dialogOpen.value = false;
+            }
+        });
 }
 </script>
 
@@ -105,13 +108,14 @@ function handleSubmit() {
                         <form class="grid gap-5 py-2" @submit.prevent="handleSubmit">
                             <div class="grid gap-2">
                                 <Label for="question-title">Question Title</Label>
-                                <Input id="question-title" v-model="form.title" placeholder="e.g. Find the top 5 customers by revenue" />
+                                <Input id="question-title" v-model="form.title"
+                                    placeholder="e.g. Find the top 5 customers by revenue" />
                             </div>
 
                             <div class="grid gap-2">
                                 <Label for="question-description">Description</Label>
-                                <Textarea id="question-description" v-model="form.description" placeholder="Describe the SQL challenge..."
-                                    class="min-h-25 resize-none" />
+                                <Textarea id="question-description" v-model="form.description"
+                                    placeholder="Describe the SQL challenge..." class="min-h-25 resize-none" />
                             </div>
 
                             <div class="grid gap-2">
@@ -134,20 +138,16 @@ function handleSubmit() {
                             <div class="grid gap-2">
                                 <Label>Topic</Label>
                                 <div class="flex flex-wrap gap-2">
-                                    <div 
-                                    v-for="topic in form.topics" 
-                                    :key="topic" 
-                                    class="bg-secondary text-secondary-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm"
-                                    >
-                                    {{ topic }}
-                                    <button type="button" @click="removeTopic(topic)"><XCircle class="h-3 w-3"/></button>
+                                    <div v-for="topic in form.topics" :key="topic"
+                                        class="bg-secondary text-secondary-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm">
+                                        {{ topic }}
+                                        <button type="button" @click="removeTopic(topic)">
+                                            <XCircle class="h-3 w-3" />
+                                        </button>
                                     </div>
                                 </div>
-                                <Input
-                                v-model="topicInput"
-                                placeholder="Type a topic and press enter"
-                                @keydown.enter.prevent="addTopic"
-                                />
+                                <Input v-model="topicInput" placeholder="Type a topic and press enter"
+                                    @keydown.enter.prevent="addTopic" />
                             </div>
 
                             <DialogFooter class="pt-2">
