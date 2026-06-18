@@ -12,6 +12,7 @@ import SidebarFooter from './ui/sidebar/SidebarFooter.vue';
 import Button from './ui/button/Button.vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
+import { route } from 'ziggy-js';
 
 const page = usePage();
 
@@ -21,20 +22,31 @@ const navItems = computed(() => {
     const courseId = course.value?.id;
 
     return [
-        { label: 'Dashboard', icon: LayoutDashboard, href: '/' },
-        { label: 'Quizzes', icon: BookOpen, href: '/quiz'},
+        { 
+            label: 'Dashboard', 
+            icon: LayoutDashboard, 
+            name: 'welcome' 
+        },
+        { 
+            label: 'Quizzes', 
+            icon: BookOpen, 
+            name: 'courses.quizzes.index',
+            params: {
+                course: courseId,
+            }
+        },
         {
             label: 'Question Bank',
             icon: Database,
-            href: `/courses/${courseId}/question-bank`
+            name: 'courses.questions.index',
+            params: {
+                course: courseId,
+            }
         },
     ];
 });
 
-const isActive = (href: string) => {
-    if (href === '/') return page.url === '/';
-    return page.url.startsWith(href);
-}
+const isActive = (name: string) => route().current(name);
 
 </script>
 
@@ -53,10 +65,10 @@ const isActive = (href: string) => {
                         <SidebarMenu>
                             <SidebarMenuItem v-for="item in navItems" :key="item.label">
                                 <SidebarMenuButton
-                                    :is-active="isActive(item.href)"
+                                    :is-active="isActive(item.name)"
                                     as-child
                                 >
-                                    <Link :href="item.href" class="flex items-center gap-2">
+                                    <Link :href="route(item.name, item.params)" class="flex items-center gap-2">
                                         <component :is="item.icon" class="w-4 h-4" />
                                         <span>{{ item.label }}</span>
                                     </Link>

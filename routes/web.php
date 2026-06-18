@@ -15,14 +15,13 @@ Route::get('/', function () {
     ]);
 })->name('welcome');
 
-Route::get('/quiz', [QuizController::class, 'index'])->name('quiz');
 
-Route::get('/courses/{course}/question-bank', [QuestionBankController::class, 'index'])
-    ->name('quiz.question-bank');
+// Route::get('/quiz', [QuizController::class, 'index'])->name('quiz');
 
-Route::post('/courses/{course}/questions', [QuestionBankController::class, 'store'])
-    ->name('courses.questions.store');
+Route::resource('courses.quizzes', QuizController::class);
 
+
+Route::resource('courses.questions', QuestionBankController::class);
 // Public (LTI entry)
 Route::any('/lti', [App\Http\Controllers\LTIController::class, 'ltiMessage']);
 Route::get('/lti/jwks', [App\Http\Controllers\LTIController::class, 'getJWKS']);
