@@ -18,10 +18,11 @@ Route::get('/', function () {
 
 // Route::get('/quiz', [QuizController::class, 'index'])->name('quiz');
 
-Route::resource('courses.quizzes', QuizController::class);
+Route::resource('courses.quizzes', QuizController::class)->scoped();
+Route::get('/edit-question', [QuestionBankController::class, 'edit']);
 
 
-Route::resource('courses.questions', QuestionBankController::class);
+Route::resource('courses.questions', QuestionBankController::class)->scoped();
 // Public (LTI entry)
 Route::any('/lti', [App\Http\Controllers\LTIController::class, 'ltiMessage']);
 Route::get('/lti/jwks', [App\Http\Controllers\LTIController::class, 'getJWKS']);
