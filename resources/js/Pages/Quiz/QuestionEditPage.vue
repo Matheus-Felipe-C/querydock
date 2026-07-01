@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AppLayout from '@/components/layout/AppLayout.vue';
+import Badge from '@/components/ui/badge/Badge.vue';
 import Breadcrumb from '@/components/ui/breadcrumb/Breadcrumb.vue';
 import BreadcrumbItem from '@/components/ui/breadcrumb/BreadcrumbItem.vue';
 import BreadcrumbLink from '@/components/ui/breadcrumb/BreadcrumbLink.vue';
@@ -24,7 +25,7 @@ import ToggleGroup from '@/components/ui/toggle-group/ToggleGroup.vue';
 import ToggleGroupItem from '@/components/ui/toggle-group/ToggleGroupItem.vue';
 import { Link } from '@inertiajs/vue3';
 import { CheckCircle2, CircleAlert, FileCode, LoaderCircle, Play } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 defineOptions({
     layout: AppLayout,
@@ -38,7 +39,7 @@ interface QueryExecutionResult {
     error?: string;
 }
 
-const isRunning = ref(false);
+const isRunning = ref(true);
 
 const executionResult = ref<QueryExecutionResult>({
     success: true,
@@ -63,6 +64,21 @@ const executionResult = ref<QueryExecutionResult>({
 //     error:
 //         'ERROR: relation "userss" does not exist\nLINE 1: SELECT * FROM userss',
 // };
+
+const questionStatus = computed(() => {
+    if (executionResult.value?.success) {
+        return {
+            label: 'Published',
+            variant: "default" as const,
+        };
+    }
+
+    return {
+        label: 'Draft',
+        variant: "secondary" as const,
+    };
+})
+
 </script>
 
 <template>
@@ -251,13 +267,29 @@ const executionResult = ref<QueryExecutionResult>({
                     <CardHeader>
                         <CardTitle class="text-xl">Settings</CardTitle>
                     </CardHeader>
-                    <CardContent class="space-y-2">
-                        <Label for="question-point-value">Point Value</Label>
-                        <Input 
-                            id="question-point-value" 
-                            type="number" 
-                            min="0"   
-                        />
+                    <CardContent>
+                        <div class="space-y-2 border-b pb-4">
+                            <Label for="question-point-value">Point Value</Label>
+                            <Input 
+                                id="question-point-value" 
+                                type="number" 
+                                min="0"
+                                class="max-w-30"
+                            />
+                        </div>
+                        <div class="flex items-start justify-between mt-4">
+                            <div v-if="questionStatus.label === 'Published'">
+                                <span class="font-semibold text-sm">Status</span>
+                                <p class="text-muted-foreground text-sm">Ready for quizzes</p>
+                            </div>
+                            <div v-else>
+                                <span class="font-semibold text-sm">Status</span>
+                                <p class="text-muted-foreground text-sm">Not ready to add to a quiz yet</p>
+                            </div>
+                            <Badge class="text-sm" :variant="questionStatus.variant">
+                                {{ questionStatus.label }}
+                            </Badge>
+                        </div>
                     </CardContent>
                 </Card>
             </div>
