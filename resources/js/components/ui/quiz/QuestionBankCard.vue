@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Eye, LayersPlus, Pencil } from 'lucide-vue-next';
+import { LayersPlus, Pencil, Trash2 } from 'lucide-vue-next';
 import Card from '../card/Card.vue';
 import CardContent from '../card/CardContent.vue';
 import CardFooter from '../card/CardFooter.vue';
@@ -9,12 +9,30 @@ import Button from '../button/Button.vue';
 import Badge from '../badge/Badge.vue';
 import { Question } from '@/types/question';
 import { route } from 'ziggy-js';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
+import AlertDialog from '../alert-dialog/AlertDialog.vue';
+import AlertDialogTrigger from '../alert-dialog/AlertDialogTrigger.vue';
+import AlertDialogContent from '../alert-dialog/AlertDialogContent.vue';
+import AlertDialogTitle from '../alert-dialog/AlertDialogTitle.vue';
+import AlertDialogHeader from '../alert-dialog/AlertDialogHeader.vue';
+import AlertDialogDescription from '../alert-dialog/AlertDialogDescription.vue';
+import AlertDialogFooter from '../alert-dialog/AlertDialogFooter.vue';
+import AlertDialogCancel from '../alert-dialog/AlertDialogCancel.vue';
+import AlertDialogAction from '../alert-dialog/AlertDialogAction.vue';
 
-defineProps<{
+const props = defineProps<{
     question: Question
     courseId: number;
 }>();
+
+function deleteQuestion() {
+    router.delete(
+        route('courses.questions.destroy', {
+            course: props.courseId,
+            question: props.question.id,
+        })
+    )
+}
 
 </script>
 
@@ -42,7 +60,38 @@ defineProps<{
             <div class="flex justify-between items-center w-full px-6 mt-4">
                 <span class="text-muted-foreground">Created at</span>
                 <div class="flex items-center gap-2">
-                    <Eye class="w-8 h-8 px-1 hover:bg-gray-200" />
+                    <AlertDialog>
+                        <AlertDialogTrigger>
+                            <Button
+                            variant="ghost"
+                            size="icon"
+                            class="text-red-600 hover:text-red-700 hover:bg-red-50"
+                            >
+                                <Trash2 class="w-8 h-8" />
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                    Delete question?
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    This action cannot be undone. The question "{{ question.title }}" will be permanently deleted.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>
+                                    Cancel
+                                </AlertDialogCancel>
+                                <AlertDialogAction
+                                    class="bg-red-600 hover:bg-red-700"
+                                    @click="deleteQuestion"
+                                >
+                                    Delete
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                     <Link :href="route('courses.questions.edit', {
                         course: courseId,
                         question: question.id,
