@@ -152,7 +152,7 @@ const questionStatus = computed(() => {
                             <Input id="questionTitle" placeholder="Find the customers with salaries over 1000"
                                 required v-model="form.title" />
 
-                            <div class="grid gap-6 py-4 md:grid-cols-2">
+                            <div class="grid gap-6 py-4">
                                 <div class="grid gap-2">
                                     <Label for="questionDifficulty">Question Difficulty<span
                                             class="text-red-500">*</span></Label>
