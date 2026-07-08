@@ -23,13 +23,39 @@ import TableRow from '@/components/ui/table/TableRow.vue';
 import Textarea from '@/components/ui/textarea/Textarea.vue';
 import ToggleGroup from '@/components/ui/toggle-group/ToggleGroup.vue';
 import ToggleGroupItem from '@/components/ui/toggle-group/ToggleGroupItem.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import { CheckCircle2, CircleAlert, FileCode, LoaderCircle, Play } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
+import { Course } from '@/types/course';
+import { Question } from '@/types/question';
+import { route } from 'ziggy-js';
+import TopicInput from '@/components/ui/quiz/TopicInput.vue';
 
 defineOptions({
     layout: AppLayout,
 });
+
+const props = defineProps<{
+    course: Course;
+    question: Question;
+}>();
+
+const form = useForm({
+    title: props.question.title,
+    description: props.question.description,
+    difficulty: props.question.difficulty,
+    topics: props.question.topics,
+    expected_answer: props.question.expected_answer,
+})
+
+const save = () => {
+    form.put(
+        route('courses.questions.update', {
+            course: props.course.id,
+            question: props.question.id,
+        })
+    )
+}
 
 interface QueryExecutionResult {
     success: boolean;
@@ -79,6 +105,8 @@ const questionStatus = computed(() => {
     };
 })
 
+console.log(props.question);
+
 </script>
 
 <template>
@@ -99,12 +127,14 @@ const questionStatus = computed(() => {
 
         <section class="flex items-start justify-between">
             <div>
-                <h1 class="text-3xl font-bold">Edit Question: Customer Churn Rate</h1>
+                <h1 class="text-3xl font-bold">Edit Question: {{ form.title }}</h1>
                 <p class="text-sm text-muted-foreground">Update prompt, schema, or solution validation.</p>
             </div>
             <div class="flex items-center gap-2">
                 <Button variant="outline">Cancel</Button>
-                <Button variant="default">Save Changes</Button>
+                <Button :disabled="form.processing" @click="save">
+                    {{ form.processing ? "Saving..." : "Save Changes" }}
+                </Button>
             </div>
         </section>
 
@@ -118,13 +148,13 @@ const questionStatus = computed(() => {
                         <div class="grid gap-2 grid-cols-1">
                             <Label for="questionTitle">Question Title<span class="text-red-500">*</span></Label>
                             <Input id="questionTitle" placeholder="Find the customers with salaries over 1000"
-                                required />
+                                required v-model="form.title" />
 
                             <div class="grid gap-6 py-4 md:grid-cols-2">
                                 <div class="grid gap-2">
                                     <Label for="questionDifficulty">Question Difficulty<span
                                             class="text-red-500">*</span></Label>
-                                    <ToggleGroup type="single" variant="outline" size="lg">
+                                    <ToggleGroup type="single" v-model="form.difficulty" variant="outline" size="lg">
                                         <ToggleGroupItem class="md:w-28" value="easy" aria-label="Easy difficulty">Easy
                                         </ToggleGroupItem>
                                         <ToggleGroupItem class="md:w-28" value="medium" aria-label="Medium difficulty">
@@ -134,9 +164,8 @@ const questionStatus = computed(() => {
                                     </ToggleGroup>
                                 </div>
 
-                                <div class="grid gap-2">
-                                    <Label for="questionTopics">Question Topics</Label>
-                                    <Input id="questionTopics" placeholder="CTEs, Window Functions, Aggregation" />
+                                <div class="gap-2">
+                                    <TopicInput id="questionTopics" v-model="form.topics" placeholder="CTEs, Window Functions, Aggregation" />
                                 </div>
 
                             </div>
@@ -148,7 +177,7 @@ const questionStatus = computed(() => {
                         <CardTitle class="text-xl">Question Prompt</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <Textarea class="min-h-40" placeholder="Write a query to..." />
+                        <Textarea class="min-h-40" placeholder="Write a query to..." v-model="form.description" />
                     </CardContent>
                 </Card>
                 <Card>

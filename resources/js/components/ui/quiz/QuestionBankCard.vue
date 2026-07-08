@@ -8,9 +8,12 @@ import CardTitle from '../card/CardTitle.vue';
 import Button from '../button/Button.vue';
 import Badge from '../badge/Badge.vue';
 import { Question } from '@/types/question';
+import { route } from 'ziggy-js';
+import { Link } from '@inertiajs/vue3';
 
 defineProps<{
     question: Question
+    courseId: number;
 }>();
 
 </script>
@@ -25,7 +28,7 @@ defineProps<{
             </div>
             <!-- Question tags -->
             <div class="flex flex-wrap gap-2">
-                <Badge variant="secondary" v-for="tag in question.tags">{{ tag }}</Badge>
+                <Badge variant="secondary" v-for="topic in question.topics">{{ topic }}</Badge>
             </div>
         </CardHeader>
         <CardContent>
@@ -40,7 +43,12 @@ defineProps<{
                 <span class="text-muted-foreground">Created at</span>
                 <div class="flex items-center gap-2">
                     <Eye class="w-8 h-8 px-1 hover:bg-gray-200" />
-                    <Pencil class="w-8 h-8 px-1 hover:bg-gray-200" />
+                    <Link :href="route('courses.questions.edit', {
+                        course: courseId,
+                        question: question.id,
+                    })">
+                        <Pencil class="w-8 h-8 px-1 hover:bg-gray-200" />
+                    </Link>
                     <Button><LayersPlus/>Add</Button>
                 </div>
             </div>

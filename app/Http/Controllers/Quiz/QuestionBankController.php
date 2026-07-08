@@ -55,13 +55,13 @@ class QuestionBankController extends Controller
 
         $question->update($validated);
 
-        return back();
+        return redirect()->route('courses.questions.index', $course);
     }
 
     public function destroy(Request $request, Course $course, Question $question) {
         $question->delete();
         
-        return back();
+        return redirect()->route('courses.questions.index', $course);
     }
 
 }

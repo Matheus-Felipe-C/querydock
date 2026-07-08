@@ -7,7 +7,7 @@ import InputGroupInput from '@/components/ui/input-group/InputGroupInput.vue';
 import NativeSelect from '@/components/ui/native-select/NativeSelect.vue';
 import NativeSelectOption from '@/components/ui/native-select/NativeSelectOption.vue';
 import QuestionBankCard from '@/components/ui/quiz/QuestionBankCard.vue';
-import { Plus, SearchIcon, X, XCircle } from 'lucide-vue-next';
+import { Plus, SearchIcon, X } from 'lucide-vue-next';
 import { Question } from '@/types/question';
 import Dialog from '@/components/ui/dialog/Dialog.vue';
 import DialogTrigger from '@/components/ui/dialog/DialogTrigger.vue';
@@ -26,6 +26,7 @@ import { Course } from '@/types/course';
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { route } from 'ziggy-js';
+import TopicInput from '@/components/ui/quiz/TopicInput.vue';
 
 defineOptions({
     layout: AppLayout,
@@ -43,24 +44,7 @@ const form = useForm({
     topics: [] as string[],
 })
 
-const topicInput = ref('');
 const dialogOpen = ref(false);
-
-function addTopic() {
-    const value = topicInput.value.trim().toLowerCase();
-
-    if (!value) return;
-
-    if (!form.topics.includes(value)) {
-        form.topics.push(value);
-    }
-
-    topicInput.value = '';
-}
-
-function removeTopic(topic: string) {
-    form.topics = form.topics.filter(t => t !== topic);
-}
 
 function handleSubmit() {
     form.post(route('courses.questions.store', {
@@ -135,20 +119,7 @@ function handleSubmit() {
                                     </ToggleGroupItem>
                                 </ToggleGroup>
                             </div>
-                            <div class="grid gap-2">
-                                <Label>Topic</Label>
-                                <div class="flex flex-wrap gap-2">
-                                    <div v-for="topic in form.topics" :key="topic"
-                                        class="bg-secondary text-secondary-foreground flex items-center gap-1 rounded-md px-2 py-1 text-sm">
-                                        {{ topic }}
-                                        <button type="button" @click="removeTopic(topic)">
-                                            <XCircle class="h-3 w-3" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <Input v-model="topicInput" placeholder="Type a topic and press enter"
-                                    @keydown.enter.prevent="addTopic" />
-                            </div>
+                            <TopicInput v-model="form.topics" />
 
                             <DialogFooter class="pt-2">
                                 <DialogClose as-child>
@@ -200,7 +171,7 @@ function handleSubmit() {
                 <p class="text-lg font-medium">No questions found</p>
                 <p class="text-sm">Create your first question to get started.</p>
             </div>
-            <QuestionBankCard v-for="question in questions" :key="question.id" :question="question" />
+            <QuestionBankCard v-for="question in questions" :key="question.id" :question="question" :course-id="course.id" />
         </section>
     </div>
 </template>
