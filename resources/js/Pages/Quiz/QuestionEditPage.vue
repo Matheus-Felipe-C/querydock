@@ -105,8 +105,6 @@ const questionStatus = computed(() => {
     };
 })
 
-console.log(props.question);
-
 </script>
 
 <template>
@@ -131,7 +129,11 @@ console.log(props.question);
                 <p class="text-sm text-muted-foreground">Update prompt, schema, or solution validation.</p>
             </div>
             <div class="flex items-center gap-2">
-                <Button variant="outline">Cancel</Button>
+                <Button variant="outline" as-child>
+                    <Link :href="route('courses.questions.index', course.id)">
+                        Cancel
+                    </Link>
+                </Button>
                 <Button :disabled="form.processing" @click="save">
                     {{ form.processing ? "Saving..." : "Save Changes" }}
                 </Button>
