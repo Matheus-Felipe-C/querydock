@@ -6,6 +6,7 @@ import InputGroupAddon from '@/components/ui/input-group/InputGroupAddon.vue';
 import InputGroupInput from '@/components/ui/input-group/InputGroupInput.vue';
 import NativeSelect from '@/components/ui/native-select/NativeSelect.vue';
 import NativeSelectOption from '@/components/ui/native-select/NativeSelectOption.vue';
+import QuizCard from '@/components/ui/quiz/QuizCard.vue';
 import ToggleGroup from '@/components/ui/toggle-group/ToggleGroup.vue';
 import ToggleGroupItem from '@/components/ui/toggle-group/ToggleGroupItem.vue';
 import { Course } from '@/types/course';
@@ -70,12 +71,13 @@ const props = defineProps<{
 
         <!-- Quiz cards -->
         <section class="grid grid-cols-3 gap-2">
-            <div v-if="quizzes.length === 0" class="col-span-3 text-center py-12 text-muted-foreground">
+            <!-- Change this later to quizzes.length === 0, just changed this to make it easier to test out the design without a major refactor -->
+            <div v-if="!course.id" class="col-span-3 text-center py-12 text-muted-foreground">
                 <p class="text-lg font-medium">No quizzes found</p>
                 <p class="text-sm">Create your first quiz to get started.</p>
             </div>
             <div v-else>
-                <p>There will be a quiz card component</p>
+                <QuizCard />
             </div>
         </section>
     </div>
