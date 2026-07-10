@@ -30,6 +30,7 @@ import { Course } from '@/types/course';
 import { Question } from '@/types/question';
 import { route } from 'ziggy-js';
 import TopicInput from '@/components/ui/quiz/TopicInput.vue';
+import SqlEditor from '@/components/ui/quiz/SqlEditor.vue';
 
 defineOptions({
     layout: AppLayout,
@@ -189,8 +190,7 @@ const questionStatus = computed(() => {
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <!-- TODO: Change this to a CodeMirror instance later -->
-                        <Textarea class="min-h-40" placeholder="This will be changed to a CodeMirror instance later" />
+                         <SqlEditor min-height="300px" />
                     </CardContent>
                 </Card>
             </div>
@@ -206,9 +206,7 @@ const questionStatus = computed(() => {
                     <CardContent class="space-y-4">
                         <div>
                             <Label for="reference-query" class="mb-2">Reference topics</Label>
-                            <!-- TODO: Change this to a CodeMirror instance later -->
-                            <Textarea id="reference-query" class="min-h-30"
-                                placeholder="This will be changed to a CodeMirror instance later" />
+                            <SqlEditor min-height="120px" />
                         </div>
 
                         <Button variant="secondary" class="w-full">
