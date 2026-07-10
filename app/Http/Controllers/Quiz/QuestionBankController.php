@@ -10,13 +10,50 @@ use App\Http\Controllers\Controller;
 
 class QuestionBankController extends Controller
 {
-    public function index(Course $course)
+    public function index(Request $request, Course $course)
     {
-        $course->load("questions");
+        $query = $course->questions();
+
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'like', "%{$request->search}%")
+                ->orWhere('descriptiom', 'like', "%{$request->search}%");
+            });
+        }
+
+        if ($request->filled('difficulty')) {
+            $query->where('difficulty', $request->difficulty);
+        }
+
+        if ($request->filled('topic')) {
+            $query->whereJsonContains('topics', $request->topic);
+        }
+
+        if ($request->sort === 'oldest') {
+            $query->oldest();
+        } else {
+            $query->latest();
+        }
 
         return Inertia::render('Quiz/QuestionBank', [
             'course' => $course,
-            'questions' => $course->questions,
+            'questions' => $query
+                ->paginate(12)
+                ->withQueryString(),
+            'topics' => $course->questions
+                ->pluck('topics')
+                ->flatten()
+                ->unique()
+                ->sort()
+                ->values(),
+                
+
+            'filters' => [
+                'search' => $request->search,
+                'difficulty' => $request->difficulty,
+                'topic' => $request->topic,
+                'sort' => $request->sort,
+            ],
         ]);
     }
 
