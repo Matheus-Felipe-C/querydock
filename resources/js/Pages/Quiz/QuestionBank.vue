@@ -9,24 +9,9 @@ import NativeSelectOption from '@/components/ui/native-select/NativeSelectOption
 import QuestionBankCard from '@/components/ui/quiz/QuestionBankCard.vue';
 import { Plus, SearchIcon, X } from 'lucide-vue-next';
 import { Question } from '@/types/question';
-import Dialog from '@/components/ui/dialog/Dialog.vue';
-import DialogTrigger from '@/components/ui/dialog/DialogTrigger.vue';
-import DialogContent from '@/components/ui/dialog/DialogContent.vue';
-import DialogHeader from '@/components/ui/dialog/DialogHeader.vue';
-import DialogTitle from '@/components/ui/dialog/DialogTitle.vue';
-import DialogDescription from '@/components/ui/dialog/DialogDescription.vue';
-import DialogFooter from '@/components/ui/dialog/DialogFooter.vue';
-import DialogClose from '@/components/ui/dialog/DialogClose.vue';
-import Input from '@/components/ui/input/Input.vue';
-import Textarea from '@/components/ui/textarea/Textarea.vue';
-import Label from '@/components/ui/label/Label.vue';
-import ToggleGroup from '@/components/ui/toggle-group/ToggleGroup.vue';
-import ToggleGroupItem from '@/components/ui/toggle-group/ToggleGroupItem.vue';
 import { Course } from '@/types/course';
-import { useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
 import { route } from 'ziggy-js';
-import TopicInput from '@/components/ui/quiz/TopicInput.vue';
+import { Link } from '@inertiajs/vue3';
 
 defineOptions({
     layout: AppLayout,
@@ -37,28 +22,6 @@ const props = defineProps<{
     questions: Question[]
 }>();
 
-const form = useForm({
-    title: '',
-    description: '',
-    difficulty: '',
-    topics: [] as string[],
-})
-
-const dialogOpen = ref(false);
-
-function handleSubmit() {
-    form.post(route('courses.questions.store', {
-        course: props.course.id,
-    }),
-        {
-            preserveScroll: true,
-
-            onSuccess: () => {
-                form.reset();
-                dialogOpen.value = false;
-            }
-        });
-}
 </script>
 
 <template>
@@ -72,64 +35,12 @@ function handleSubmit() {
                 </p>
             </div>
             <div class="flex items-center gap-2">
-                <!-- Dialog for creating a new question -->
-                <Dialog v-model:open="dialogOpen">
-                    <DialogTrigger as-child>
-                        <Button variant="default">
-                            <Plus class="mr-2 h-4 w-4" />
-                            Create New Question
-                        </Button>
-                    </DialogTrigger>
-
-                    <DialogContent class="sm:max-w-lg">
-                        <DialogHeader>
-                            <DialogTitle class="text-lg font-semibold">Create New Question</DialogTitle>
-                            <DialogDescription class="text-sm text-muted-foreground">
-                                Fill in the details below to add a new SQL challenge.
-                            </DialogDescription>
-                        </DialogHeader>
-
-                        <form class="grid gap-5 py-2" @submit.prevent="handleSubmit">
-                            <div class="grid gap-2">
-                                <Label for="question-title">Question Title</Label>
-                                <Input id="question-title" v-model="form.title"
-                                    placeholder="e.g. Find the top 5 customers by revenue" />
-                            </div>
-
-                            <div class="grid gap-2">
-                                <Label for="question-description">Description</Label>
-                                <Textarea id="question-description" v-model="form.description"
-                                    placeholder="Describe the SQL challenge..." class="min-h-25 resize-none" />
-                            </div>
-
-                            <div class="grid gap-2">
-                                <Label>Difficulty</Label>
-                                <ToggleGroup type="single" v-model="form.difficulty" class="justify-start gap-2">
-                                    <ToggleGroupItem value="easy"
-                                        class="text-green-600 data-[state=on]:bg-green-100 data-[state=on]:text-green-700">
-                                        Easy
-                                    </ToggleGroupItem>
-                                    <ToggleGroupItem value="medium"
-                                        class="text-yellow-600 data-[state=on]:bg-yellow-100 data-[state=on]:text-yellow-700">
-                                        Medium
-                                    </ToggleGroupItem>
-                                    <ToggleGroupItem value="hard"
-                                        class="text-red-600 data-[state=on]:bg-red-100 data-[state=on]:text-red-700">
-                                        Hard
-                                    </ToggleGroupItem>
-                                </ToggleGroup>
-                            </div>
-                            <TopicInput v-model="form.topics" />
-
-                            <DialogFooter class="pt-2">
-                                <DialogClose as-child>
-                                    <Button type="button" variant="outline">Cancel</Button>
-                                </DialogClose>
-                                <Button type="submit" :disabled="form.processing">Create Question</Button>
-                            </DialogFooter>
-                        </form>
-                    </DialogContent>
-                </Dialog>
+                <Button as-child>
+                    <Link :href="route('courses.questions.create', course.id)">
+                        <Plus class="mr-2 h-4 w-4" />
+                        Create new Question
+                    </Link>
+                </Button>
             </div>
         </section>
 

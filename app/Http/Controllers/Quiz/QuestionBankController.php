@@ -20,6 +20,13 @@ class QuestionBankController extends Controller
         ]);
     }
 
+    public function create(Course $course)
+    {
+        return Inertia::render('Quiz/QuestionCreatePage', [
+            'course' => $course
+        ]);
+    }
+
     public function store(Request $request, Course $course)
     {
         $validated = $request->validate([
@@ -33,7 +40,7 @@ class QuestionBankController extends Controller
 
         $course->questions()->create($validated);
 
-        return redirect()->back();
+        return redirect()->route('courses.questions.index', $course);
     }
 
     public function edit(Course $course, Question $question) {
