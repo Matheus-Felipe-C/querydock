@@ -68,7 +68,7 @@ class QuestionBankController extends Controller
     {
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
+            'description' => ['required', 'string'],
             'difficulty' => ['required', 'in:easy,medium,hard'],
             'topics' => 'array',
             'topics.*' => ['string', 'max:50'],

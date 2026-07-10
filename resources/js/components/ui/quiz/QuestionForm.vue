@@ -30,6 +30,9 @@ import { Course } from '@/types/course';
 import { route } from 'ziggy-js';
 import TopicInput from '@/components/ui/quiz/TopicInput.vue';
 import SqlEditor from '@/components/ui/quiz/SqlEditor.vue';
+import Alert from '../alert/Alert.vue';
+import AlertTitle from '../alert/AlertTitle.vue';
+import AlertDescription from '../alert/AlertDescription.vue';
 
 defineOptions({
     layout: AppLayout,
@@ -97,6 +100,13 @@ const questionStatus = computed(() => {
 
 <template>
     <div class="w-full mx-auto flex flex-col gap-2 px-4">
+        <Alert v-if="form.hasErrors" variant="destructive" class="mb-4">
+            <CircleAlert class="w-4 h-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>
+                There was a problem saving the question. Please check the fields below.
+            </AlertDescription>
+        </Alert>
         <Breadcrumb>
             <BreadcrumbList>
                 <BreadcrumbItem>
@@ -144,15 +154,23 @@ const questionStatus = computed(() => {
                     </CardHeader>
                     <CardContent>
                         <div class="grid gap-2 grid-cols-1">
-                            <Label for="questionTitle">Question Title<span class="text-red-500">*</span></Label>
-                            <Input id="questionTitle" placeholder="Find the customers with salaries over 1000"
-                                required v-model="form.title" />
+                            <Label for="questionTitle" :class="{ 'text-destructive': form.errors.title }">Question
+                                Title<span class="text-red-500">*</span></Label>
+                            <Input id="questionTitle" placeholder="Find the customers with salaries over 1000" required
+                                v-model="form.title"
+                                :class="{ 'border-destructive focus-visible:ring-destructive': form.errors.title }" />
+
+                            <p v-if="form.errors.title" class="text-sm font-medium text-destructive mt-1">
+                                {{ form.errors.title }}
+                            </p>
 
                             <div class="grid gap-6 py-4">
                                 <div class="grid gap-2">
-                                    <Label for="questionDifficulty">Question Difficulty<span
+                                    <Label for="questionDifficulty"
+                                        :class="{ 'text-destructive': form.errors.difficulty }">Question Difficulty<span
                                             class="text-red-500">*</span></Label>
-                                    <ToggleGroup type="single" v-model="form.difficulty" variant="outline" size="lg">
+                                    <ToggleGroup type="single" required v-model="form.difficulty" variant="outline"
+                                        size="lg" :class="{ 'text-destructive': form.errors.difficulty }">
                                         <ToggleGroupItem class="md:w-28" value="easy" aria-label="Easy difficulty">Easy
                                         </ToggleGroupItem>
                                         <ToggleGroupItem class="md:w-28" value="medium" aria-label="Medium difficulty">
@@ -160,10 +178,14 @@ const questionStatus = computed(() => {
                                         <ToggleGroupItem class="md:w-28" value="hard" aria-label="Hard difficulty">Hard
                                         </ToggleGroupItem>
                                     </ToggleGroup>
+                                    <p v-if="form.errors.difficulty" class="text-sm font-medium text-destructive mt-1">
+                                        {{ form.errors.difficulty }}
+                                    </p>
                                 </div>
 
                                 <div class="gap-2">
-                                    <TopicInput id="questionTopics" v-model="form.topics" placeholder="CTEs, Window Functions, Aggregation" />
+                                    <TopicInput id="questionTopics" v-model="form.topics"
+                                        placeholder="CTEs, Window Functions, Aggregation" />
                                 </div>
 
                             </div>
@@ -172,20 +194,32 @@ const questionStatus = computed(() => {
                 </Card>
                 <Card>
                     <CardHeader>
-                        <CardTitle class="text-xl">Question Prompt</CardTitle>
+                        <CardTitle class="text-xl" :class="{ 'text-destructive': form.errors.description }">Question
+                            Prompt<span class="text-red-500">*</span></CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <Textarea class="min-h-40" placeholder="Write a query to..." v-model="form.description" />
+                        <p v-if="form.errors.description" class="text-sm font-medium text-destructive mt-1">
+                            {{ form.errors.description }}
+                        </p>
+                        <Textarea class="min-h-40" required placeholder="Write a query to..." v-model="form.description"
+                            :class="{ 'text-destructive': form.errors.description }" />
                     </CardContent>
                 </Card>
                 <Card>
                     <CardHeader>
-                        <CardTitle class="flex items-center gap-2 text-xl">
+                        <CardTitle class="flex items-center gap-2 text-xl"
+                            :class="{ 'text-destructive': form.errors.description }">
                             <FileCode />Schema Configuration (DDL & Seed Data)
+                            <p v-if="form.errors.description" class="text-sm font-medium text-destructive mt-1">
+                                {{ form.errors.description }}
+                            </p>
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                         <SqlEditor min-height="300px" />
+                         <p v-if="form.errors.description" class="text-sm font-medium text-destructive mt-1">
+                            {{ form.errors.description }}
+                        </p>
+                        <SqlEditor min-height="300px" />
                     </CardContent>
                 </Card>
             </div>
@@ -214,36 +248,38 @@ const questionStatus = computed(() => {
 
                             <!-- Results -->
                             <div class="rounded-lg border overflow-hidden">
-    
+
                                 <!-- Idle -->
                                 <div v-if="!executionResult && !isRunning"
                                     class="flex h-48 items-center justify-center text-sm text-muted-foreground">
                                     Run the query to see the results.
                                 </div>
-    
+
                                 <!-- Loading -->
-                                <div v-else-if="!executionResult && isRunning" class="flex items-center gap-2 p-6 text-sm">
+                                <div v-else-if="!executionResult && isRunning"
+                                    class="flex items-center gap-2 p-6 text-sm">
                                     <LoaderCircle class="h-4 w-4 animate-spin" />
                                     Executing query...
                                 </div>
-    
+
                                 <!-- Success -->
                                 <template v-else-if="executionResult.success">
-    
+
                                     <!-- Status -->
-                                    <div class="flex items-center justify-between border-b bg-muted/40 px-4 py-2 text-sm">
+                                    <div
+                                        class="flex items-center justify-between border-b bg-muted/40 px-4 py-2 text-sm">
                                         <div class="flex items-center gap-2 text-green-600">
                                             <CheckCircle2 class="h-4 w-4" />
                                             Query executed successfully
                                         </div>
-    
+
                                         <div class="text-muted-foreground">
                                             {{ executionResult.rows.length }}
                                             rows •
                                             {{ executionResult.durationMs }} ms
                                         </div>
                                     </div>
-    
+
                                     <!-- Scrollable table -->
                                     <div class="max-h-80 overflow-auto">
                                         <Table class="min-w-full">
@@ -254,7 +290,7 @@ const questionStatus = computed(() => {
                                                     </TableHead>
                                                 </TableRow>
                                             </TableHeader>
-    
+
                                             <TableBody>
                                                 <TableRow v-for="(row, i) in executionResult.rows" :key="i">
                                                     <TableCell v-for="(cell, j) in row" :key="j">
@@ -264,25 +300,26 @@ const questionStatus = computed(() => {
                                             </TableBody>
                                         </Table>
                                     </div>
-    
+
                                 </template>
-    
+
                                 <!-- Error -->
                                 <template v-else>
-    
+
                                     <!-- Status -->
-                                    <div class="flex items-center gap-2 border-b bg-red-50 px-4 py-2 text-sm text-red-700">
+                                    <div
+                                        class="flex items-center gap-2 border-b bg-red-50 px-4 py-2 text-sm text-red-700">
                                         <CircleAlert class="h-4 w-4" />
                                         Query failed
                                     </div>
-    
+
                                     <!-- Error details -->
                                     <pre class="overflow-auto p-4 text-sm whitespace-pre-wrap text-red-800">{{
                                         executionResult.error
                                     }}</pre>
-    
+
                                 </template>
-    
+
                             </div>
                         </div>
                     </CardContent>
@@ -294,12 +331,7 @@ const questionStatus = computed(() => {
                     <CardContent>
                         <div class="space-y-2 border-b pb-4">
                             <Label for="question-point-value">Point Value</Label>
-                            <Input 
-                                id="question-point-value" 
-                                type="number" 
-                                min="0"
-                                class="max-w-30"
-                            />
+                            <Input id="question-point-value" type="number" min="0" class="max-w-30" />
                         </div>
                         <div class="flex items-start justify-between mt-4">
                             <div v-if="questionStatus.label === 'Published'">
