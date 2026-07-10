@@ -167,7 +167,7 @@ function handleSubmit() {
 
         <!-- Question cards section -->
         <section class="grid grid-cols-2 gap-4">
-            <div v-if="questions.length === 0" class="col-span-2 text-center py-12 texc}t-muted-foreground">
+            <div v-if="questions.length === 0" class="col-span-2 text-center py-12 text-muted-foreground">
                 <p class="text-lg font-medium">No questions found</p>
                 <p class="text-sm">Create your first question to get started.</p>
             </div>

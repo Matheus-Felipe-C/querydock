@@ -12,8 +12,9 @@ class QuizController extends Controller
     public function index(Course $course)
     {
 
-        return Inertia::render('Home', [
+        return Inertia::render('Quiz/QuizPage', [
             'course' => $course,
+            'quizzes' => [],
         ]);
     }
 }
