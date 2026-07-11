@@ -19,6 +19,7 @@ import AlertDialogDescription from '../alert-dialog/AlertDialogDescription.vue';
 import AlertDialogFooter from '../alert-dialog/AlertDialogFooter.vue';
 import AlertDialogCancel from '../alert-dialog/AlertDialogCancel.vue';
 import AlertDialogAction from '../alert-dialog/AlertDialogAction.vue';
+import { computed } from 'vue';
 
 const props = defineProps<{
     question: Question
@@ -34,6 +35,27 @@ function deleteQuestion() {
     )
 }
 
+const difficultyConfig = {
+    easy: {
+        label: 'EASY',
+        className: 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+    },
+    medium: {
+        label: 'MEDIUM',
+        className: 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
+    },
+    hard: {
+        label: 'HARD',
+        className: 'bg-red-100 text-red-700 hover:bg-red-200'
+    }
+}
+
+const currentDifficulty = computed(() => {
+    const diff = (props.question.difficulty ?? 'easy').toLowerCase() as 'easy' | 'medium' | 'hard';
+
+    return difficultyConfig[diff] || difficultyConfig.easy;
+})
+
 </script>
 
 <template>
@@ -42,7 +64,12 @@ function deleteQuestion() {
         <CardHeader>
             <div class="flex justify-between">
                 <CardTitle>{{ question.title }}</CardTitle>
-                <Badge class="bg-yellow-100 text-yellow-700 hover:bg-yellow-200 px-2 py-1">MEDIUM</Badge>
+
+                <Badge 
+                    :class="['px-2 py-1 transition-colors uppercase', currentDifficulty.className]"
+                >
+                    {{ currentDifficulty.label }}
+                </Badge>
             </div>
             <!-- Question tags -->
             <div class="flex flex-wrap gap-2">
