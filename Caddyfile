@@ -1,0 +1,17 @@
+{
+    frankenphp
+    auto_https off
+}
+
+:80 {
+    root * /app/public
+
+    # Serve static files directly, fall back to index.php
+    php_server
+
+    encode gzip
+
+    log {
+        output stdout
+    }
+}
