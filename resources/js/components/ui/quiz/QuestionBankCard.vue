@@ -85,7 +85,7 @@ const currentDifficulty = computed(() => {
         <CardFooter class="flex flex-col p-0">
             <div class="w-11/12 mx-auto border-t"></div>
             <div class="flex justify-between items-center w-full px-6 mt-4">
-                <span class="text-muted-foreground">Created at</span>
+                <span class="text-muted-foreground text-sm italic">Created at</span>
                 <div class="flex items-center gap-2">
                     <AlertDialog>
                         <AlertDialogTrigger>

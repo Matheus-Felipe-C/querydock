@@ -1,8 +1,7 @@
     <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { EditorState } from '@codemirror/state';
-import { EditorView, } from '@codemirror/view';
-import { basicSetup } from 'codemirror';
+import { basicSetup, EditorView } from 'codemirror';
 import { sql } from '@codemirror/lang-sql';
 
 const props = withDefaults(
@@ -29,6 +28,7 @@ onMounted(() => {
             extensions: [
                 basicSetup,
                 sql(),
+                EditorView.lineWrapping,
                 EditorView.updateListener.of((update) => {
                     if (update.docChanged) {
                         model.value = update.state.doc.toString()
@@ -48,7 +48,20 @@ onBeforeUnmount(() => {
 <template>
     <div 
         ref="editorContainer" 
-        class="min-h-40 rounded-md border bg-background"
+        class="w-full max-w-full min-h-40 rounded-md border bg-background overflow-hidden"
         :style="{ minHeight: props.minHeight }"
     />
 </template>
+
+<style>
+/* Forces internal CodeMirror container to be within boundaries for mobile responsivity */
+
+.cm-editor {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.cm-scroller {
+    overflow-x: auto;
+}
+</style>

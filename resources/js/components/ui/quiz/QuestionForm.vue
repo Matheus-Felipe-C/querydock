@@ -125,29 +125,29 @@ const questionStatus = computed(() => {
             </BreadcrumbList>
         </Breadcrumb>
 
-        <section class="flex items-start justify-between">
+        <section class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-                <h1 class="text-3xl font-bold">
+                <h1 class="text-xl font-bold md:text-2xl">
                     {{ pageTitle }}
                 </h1>
                 <p class="text-sm text-muted-foreground">
                     {{ subtitle }}
                 </p>
             </div>
-            <div class="flex items-center gap-2">
-                <Button variant="outline" as-child>
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <Button variant="outline" as-child class="flex-1 sm:flex-initial justify-center">
                     <Link :href="route('courses.questions.index', course.id)">
                         Cancel
                     </Link>
                 </Button>
-                <Button :disabled="form.processing" @click="emit('submit')">
+                <Button :disabled="form.processing" @click="emit('submit')" class="flex-1 sm:flex-initial justify-center">
                     {{ form.processing ? "Saving..." : "Save Changes" }}
                 </Button>
             </div>
         </section>
 
-        <section class="grid gap-6 lg:grid-cols-[1fr_30rem]">
-            <div class="max-w-3xl grid gap-6">
+        <section class="grid gap-6 grid-cols-1 lg:grid-cols-[1fr_30rem]">
+            <div class="grid w-full gap-6">
                 <Card>
                     <CardHeader>
                         <CardTitle class="text-xl">Question metadata</CardTitle>
@@ -170,12 +170,12 @@ const questionStatus = computed(() => {
                                         :class="{ 'text-destructive': form.errors.difficulty }">Question Difficulty<span
                                             class="text-red-500">*</span></Label>
                                     <ToggleGroup type="single" required v-model="form.difficulty" variant="outline"
-                                        size="lg" :class="{ 'text-destructive': form.errors.difficulty }">
-                                        <ToggleGroupItem class="md:w-28" value="easy" aria-label="Easy difficulty">Easy
+                                        size="lg" class="w-full justify-start gap-2" :class="{ 'text-destructive': form.errors.difficulty }">
+                                        <ToggleGroupItem class="flex-1 max-w[120px]" value="easy" aria-label="Easy difficulty">Easy
                                         </ToggleGroupItem>
-                                        <ToggleGroupItem class="md:w-28" value="medium" aria-label="Medium difficulty">
+                                        <ToggleGroupItem class="flex-1 max-w[120px]" value="medium" aria-label="Medium difficulty">
                                             Medium</ToggleGroupItem>
-                                        <ToggleGroupItem class="md:w-28" value="hard" aria-label="Hard difficulty">Hard
+                                        <ToggleGroupItem class="flex-1 max-w[120px]" value="hard" aria-label="Hard difficulty">Hard
                                         </ToggleGroupItem>
                                     </ToggleGroup>
                                     <p v-if="form.errors.difficulty" class="text-sm font-medium text-destructive mt-1">
@@ -224,7 +224,7 @@ const questionStatus = computed(() => {
                 </Card>
             </div>
 
-            <div class="space-y-4">
+            <div class="space-y-4 w-full">
                 <Card>
                     <CardHeader>
                         <CardTitle class="text-xl flex items-center gap-2">

@@ -82,17 +82,17 @@ function clearFilters() {
 </script>
 
 <template>
-    <div class="w-full mx-auto flex flex-col gap-6 py-6">
+    <div class="w-full mx-auto flex flex-col gap-6 px-4 py-6 md:py-0">
         <!-- Heading section -->
-        <section class="flex items-start justify-between">
+        <section class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-                <h1 class="text-3xl font-bold">Question Bank</h1>
+                <h1 class="text-xl font-bold md:text-2xl">Question Bank</h1>
                 <p class="text-sm text-muted-foreground">
                     Manage and organize your SQL assessment repository.
                 </p>
             </div>
-            <div class="flex items-center gap-2">
-                <Button as-child>
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <Button as-child class="w-full sm:w-auto justify-center">
                     <Link :href="route('courses.questions.create', course.id)">
                         <Plus class="mr-2 h-4 w-4" />
                         Create new Question
@@ -102,8 +102,8 @@ function clearFilters() {
         </section>
 
         <!-- Search and filtering section -->
-        <section class="w-full flex items-center justify-between gap-4 px-4 py-2 border rounded-lg">
-            <InputGroup class="w-full max-w-sm">
+        <section class="w-full flex flex-col gap-4 p-4 border rounded-lg md:flex-row md:items-center md:justify-between">
+            <InputGroup class="w-full md:max-w-sm">
                 <InputGroupInput 
                     v-model="filters.search" 
                     placeholder="Search for title or keyword..."
@@ -112,9 +112,9 @@ function clearFilters() {
                     <SearchIcon class="h-4 w-4" />
                 </InputGroupAddon>
             </InputGroup>
-            <div class="flex items-center gap-2">
+            <div class="grid grid-cols-2 gap-2 w-full sm:flex sm:items-center sm:w-auto">
                 <Select v-model="filters.difficulty" @update:model-value="applyFilters">
-                    <SelectTrigger>
+                    <SelectTrigger class="w-full sm:w-32.5">
                         <SelectValue placeholder="Difficulty" />
                     </SelectTrigger>
                     <SelectContent>
@@ -124,7 +124,7 @@ function clearFilters() {
                     </SelectContent>
                 </Select>
                 <Select v-model="filters.topic" @update:model-value="applyFilters">
-                    <SelectTrigger>
+                    <SelectTrigger class="w-full sm:w-40">
                         <SelectValue placeholder="Topics" />
                     </SelectTrigger>
                     <SelectContent>
@@ -137,7 +137,7 @@ function clearFilters() {
                         </SelectItem>
                     </SelectContent>
                 </Select>
-                <Button variant="ghost" class="text-muted-foreground gap-1" @click="clearFilters">
+                <Button variant="ghost" class="col-span-2 text-muted-foreground gap-1 justify-center sm:col-span-1" @click="clearFilters">
                     <X class="h-4 w-4" />
                     Clear
                 </Button>
@@ -145,8 +145,8 @@ function clearFilters() {
         </section>
 
         <!-- Question cards section -->
-        <section class="grid grid-cols-2 gap-4">
-            <div v-if="questions.data.length === 0" class="col-span-2 text-center py-12 text-muted-foreground">
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div v-if="questions.data.length === 0" class="col-span-1 md:grid-cols-2 lg:grid-cols-3 text-center py-12 text-muted-foreground">
                 <p class="text-lg font-medium">No questions found</p>
                 <p class="text-sm">Create your first question to get started.</p>
             </div>
