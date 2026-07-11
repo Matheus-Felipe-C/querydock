@@ -24,55 +24,62 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div class="w-full mx-auto flex flex-col gap-6 py-6">
-        <section class="flex items-start justify-between">
+    <div class="w-full mx-auto flex flex-col gap-6 py-4 px-6 md:px-0">
+        <section class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-                <h1 class="text-3xl font-bold">Quizzes</h1>
+                <h1 class="text-xl font-bold md:text-2xl">Quizzes</h1>
                 <p class="text-sm text-muted-foreground">
                     Manage your SQL assessments, monitor student performance and draft new curriculum logic.
                 </p>
             </div>
-            <div flex items-center gap-2>
-                <Button><Plus class="w-4 h-4" /> Create new Quiz</Button>
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <Button class="w-full sm:w-auto justify-center">
+                    <Plus class="w-4 h-4" /> 
+                    Create new Quiz
+                </Button>
             </div>
         </section>
 
         <!-- Search and filtering -->
-        <section class="w-full flex items-center justify-evenly gap-4">
-            <ToggleGroup type="single">
-                <ToggleGroupItem value="all" aria-label="Toggle all">
-                    <p>All</p>
-                </ToggleGroupItem>
-                <ToggleGroupItem value="Published" aria-label="Toggle published">
-                    <p>Published</p>
-                </ToggleGroupItem>
-                <ToggleGroupItem value="Drafts" aria-label="Toggle drafts">
-                    <p>Drafts</p>
-                </ToggleGroupItem>
-                <ToggleGroupItem value="archived" aria-label="Toggle archived">
-                    <p>Archived</p>
-                </ToggleGroupItem>
-            </ToggleGroup>
+        <section class="w-full flex flex-col gap-4 py-4 border rounded-lg lg:flex-row lg:items-center lg:justify-between">
+            <div class="overflow-x-auto -mx-4 px-4 pb-1 sm:overflow-visible sm:mx-0 sm:px-0 sm:pb-0">
+                <ToggleGroup type="single" class="justify-start inline-flex w-full sm:w-auto">
+                    <ToggleGroupItem class="flex-1 sm:flex-initial" value="all" aria-label="Toggle all">
+                        <p>All</p>
+                    </ToggleGroupItem>
+                    <ToggleGroupItem class="flex-1 sm:flex-initial" value="Published" aria-label="Toggle published">
+                        <p>Published</p>
+                    </ToggleGroupItem>
+                    <ToggleGroupItem class="flex-1 sm:flex-initial" value="Drafts" aria-label="Toggle drafts">
+                        <p>Drafts</p>
+                    </ToggleGroupItem>
+                    <ToggleGroupItem class="flex-1 sm:flex-initial" value="archived" aria-label="Toggle archived">
+                        <p>Archived</p>
+                    </ToggleGroupItem>
+                </ToggleGroup>
+            </div>
 
-            <InputGroup class="max-w-2xl">
-                <InputGroupInput placeholder="Filter by title..." />
-                <InputGroupAddon>
-                    <ListFilter class="h-4 w-4" />
-                </InputGroupAddon>
-            </InputGroup>
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center w-full lg:max-w-2xl lg:justify-end">
+                <InputGroup class="max-w-2xl">
+                    <InputGroupInput placeholder="Filter by title..." />
+                    <InputGroupAddon>
+                        <ListFilter class="h-4 w-4" />
+                    </InputGroupAddon>
+                </InputGroup>
 
-            <div>
-                <NativeSelect>
-                    <NativeSelectOption value="">Date Created</NativeSelectOption>
-                    <NativeSelectOption value="last_month">Last Month</NativeSelectOption>
-                </NativeSelect>
+                <div class="w-full sm:w-48 shrink-0">
+                    <NativeSelect>
+                        <NativeSelectOption value="">Date Created</NativeSelectOption>
+                        <NativeSelectOption value="last_month">Last Month</NativeSelectOption>
+                    </NativeSelect>
+                </div>
             </div>
         </section>
 
         <!-- Quiz cards -->
-        <section class="grid grid-cols-3 gap-2">
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <!-- Change this later to quizzes.length === 0, just changed this to make it easier to test out the design without a major refactor -->
-            <div v-if="!course.id" class="col-span-3 text-center py-12 text-muted-foreground">
+            <div v-if="!course.id" class="col-span-1 sm:col-span-2 lg:col-span-3 text-center py-12 text-muted-foreground">
                 <p class="text-lg font-medium">No quizzes found</p>
                 <p class="text-sm">Create your first quiz to get started.</p>
             </div>
