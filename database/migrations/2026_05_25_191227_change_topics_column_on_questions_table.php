@@ -11,8 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // 1. Drop the old column first
         Schema::table('questions', function (Blueprint $table) {
-            $table->json('topics')->nullable()->change();
+            $table->dropColumn('topic');
+        });
+
+        // 2. Add the new column in a fresh closure
+        Schema::table('questions', function (Blueprint $table) {
+            $table->json('topics')->nullable();
         });
     }
 
@@ -22,7 +28,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('questions', function (Blueprint $table) {
-            $table->string('topics')->nullable()->change();
+            $table->dropColumn('topics');
+        });
+
+        Schema::table('questions', function (Blueprint $table) {
+            $table->string('topic')->nullable();
         });
     }
 };
