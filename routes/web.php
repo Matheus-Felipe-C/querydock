@@ -33,8 +33,10 @@ Route::get('/app', [AppController::class, 'index'])
     ->name('app');
 
 // Dev only routes. Will use mocked data for local testing purposes
-Route::prefix('dev')->group(function () {
-    Route::get('/question-edit', [DevController::class, 'editQuestion']);
-    Route::get('/question-bank', [DevController::class, 'questionBank']);
-    Route::get('/quiz-list', [DevController::class, 'quizList']);
-});
+if (app()->environment('local')) {
+    Route::prefix('dev')->group(function () {
+        Route::get('/question-edit', [DevController::class, 'editQuestion']);
+        Route::get('/question-bank', [DevController::class, 'questionBank']);
+        Route::get('/quiz-list', [DevController::class, 'quizList']);
+    });
+}
