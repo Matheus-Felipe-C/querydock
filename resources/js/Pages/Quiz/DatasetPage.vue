@@ -9,8 +9,9 @@ import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
 import SelectValue from '@/components/ui/select/SelectValue.vue';
 import { Course } from '@/types/course';
 import { Dataset } from '@/types/dataset';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { Plus } from '@lucide/vue';
+import { AcceptableValue } from 'reka-ui';
 import { route } from 'ziggy-js';
 
 defineOptions({
@@ -19,8 +20,24 @@ defineOptions({
 
 const props = defineProps<{
     course: Course;
-    datasets: Dataset[];   
+    datasets: Dataset[];
+    sort: string;
 }>();
+
+function changeSort(sort: AcceptableValue) {
+    if (typeof sort !== 'string') {
+        return;
+    }
+
+    router.get(
+        route('courses.datasets.index', props.course.id),
+        { sort },
+        {
+            preserveState: true,
+            replace: true,
+        }
+    );
+}
 </script>
 
 <template>
@@ -44,7 +61,10 @@ const props = defineProps<{
         </section>
 
         <section>
-            <Select>
+            <Select
+                :model-value="sort"
+                @update:model-value="changeSort"
+            >
                 <SelectTrigger class="w-40">
                     <SelectValue placeholder="Sort by..." />
                 </SelectTrigger>

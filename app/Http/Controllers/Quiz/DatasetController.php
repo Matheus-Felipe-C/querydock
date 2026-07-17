@@ -10,11 +10,32 @@ use Inertia\Inertia;
 
 class DatasetController extends Controller
 {
-    public function index(Course $course)
+    public function index(Request $request, Course $course)
     {
+        $sort = $request->input('sort', 'newest');
+
+        $query = $course->datasets();
+
+        switch ($sort) {
+            case 'name':
+                $query->orderBy('name');
+                break;
+
+            case 'usage':
+                // TODO: Placeholder until quizzes exist
+                $query->orderBy('created_at', 'desc');
+                break;
+
+            case 'newest':
+            default:
+                $query->latest();
+                break;
+        }
+
         return Inertia::render('Quiz/DatasetPage', [
             'course' => $course,
-            'datasets' => $course->datasets,
+            'datasets' => $query->get(),
+            'sort' => $sort,
         ]);
     }
 
