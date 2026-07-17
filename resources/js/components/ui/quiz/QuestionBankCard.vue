@@ -77,10 +77,9 @@ const currentDifficulty = computed(() => {
             </div>
         </CardHeader>
         <CardContent>
-            <div class="rounded-md bg-[#1e2433] text-sm font-mono text-blue-300 p-4 min-h-32">
-                <!-- Replace this div with a CodeMirror/Monaco instance -->
-                <p class="text-muted-foreground text-xs">Code editor goes here</p>
-            </div>
+            <p class="text-muted-foreground text-xs">
+                {{ question.description }}
+            </p>
         </CardContent>
         <CardFooter class="flex flex-col p-0">
             <div class="w-11/12 mx-auto border-t"></div>
