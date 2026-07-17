@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\DevController;
+use App\Http\Controllers\Quiz\DatasetController;
 use App\Http\Controllers\Quiz\QuestionBankController;
 use App\Http\Controllers\Quiz\QuizController;
 use App\Http\Middleware\EnsureLTISession;
@@ -20,9 +21,9 @@ Route::get('/', function () {
 // Route::get('/quiz', [QuizController::class, 'index'])->name('quiz');
 
 Route::resource('courses.quizzes', QuizController::class)->scoped();
-
-
 Route::resource('courses.questions', QuestionBankController::class)->scoped();
+Route::resource('courses.datasets', DatasetController::class)->scoped();
+
 // Public (LTI entry)
 Route::any('/lti', [App\Http\Controllers\LTIController::class, 'ltiMessage']);
 Route::get('/lti/jwks', [App\Http\Controllers\LTIController::class, 'getJWKS']);
@@ -38,5 +39,7 @@ if (app()->environment('local')) {
         Route::get('/question-edit', [DevController::class, 'editQuestion']);
         Route::get('/question-bank', [DevController::class, 'questionBank']);
         Route::get('/quiz-list', [DevController::class, 'quizList']);
+        Route::get('/dataset', [DevController::class, 'listDataset']);
+        Route::get('/dataset/edit', [DevController::class, 'editDataset']);
     });
 }

@@ -13,6 +13,7 @@ import Button from './ui/button/Button.vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { route } from 'ziggy-js';
+import { ListTodo } from '@lucide/vue';
 
 const page = usePage();
 
@@ -37,12 +38,20 @@ const navItems = computed(() => {
         },
         {
             label: 'Question Bank',
-            icon: Database,
+            icon: ListTodo,
             name: 'courses.questions.index',
             params: {
                 course: courseId,
             }
         },
+        {
+            label: 'Datasets',
+            icon: Database,
+            name: 'courses.datasets.index',
+            params: {
+                course: courseId,
+            }
+        }
     ];
 });
 

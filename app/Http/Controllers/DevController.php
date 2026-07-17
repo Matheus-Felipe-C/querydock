@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Dataset;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -21,6 +22,19 @@ class DevController extends Controller
         return Inertia::render('Quiz/QuestionEditPage', [
             'course' => $this->fakeCourse(),
             'questions' => Question::factory()->make(),
+        ]);
+    }
+
+    public function listDataset() {
+        return Inertia::render('Quiz/DatasetPage', [
+            'course' => $this->fakeCourse(),
+            'datasets' => Dataset::factory()->count(15)->make(),
+        ]);
+    }
+
+    public function editDataset() {
+        return Inertia::render('Quiz/CreateDatasetPage', [
+            'course' => $this->fakeCourse(),
         ]);
     }
 

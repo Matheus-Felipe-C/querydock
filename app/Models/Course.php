@@ -28,4 +28,9 @@ class Course extends Model
     {
         return $this->hasMany(Question::class);
     }
+
+    public function datasets()
+    {
+        return $this->hasMany(Dataset::class);
+    }
 }
