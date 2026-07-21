@@ -8,7 +8,6 @@ import CardContent from '@/components/ui/card/CardContent.vue';
 import Label from '@/components/ui/label/Label.vue';
 import Textarea from '@/components/ui/textarea/Textarea.vue';
 import { Input } from '@/components/ui/input';
-import QuestionCard from '@/components/ui/quiz/QuestionCard.vue';
 import AppLayout from '@/components/layout/AppLayout.vue';
 
 defineOptions({
@@ -66,6 +65,5 @@ const instructionsId = useId();
         </CardContent>
       </Card>
 
-      <QuestionCard></QuestionCard>
     </div>
 </template>

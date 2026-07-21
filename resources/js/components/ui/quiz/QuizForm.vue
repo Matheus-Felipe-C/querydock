@@ -134,7 +134,16 @@ function handleQuestionSelection(newQuestions: QuizQuestion[]) {
         </Card>
 
         <div v-if="selectedQuestions.length">
-            <QuestionCard v-for="question in selectedQuestions" :key="question.question.id" :question="question" />
+            <QuestionCard  
+                v-for="(question, index) in selectedQuestions" 
+                :key="question.question.id" 
+                :question="question" 
+                :index="index" 
+                @update:weight="val => question.weight = val"
+                @update:is_bonus="val => question.is_bonus = val"
+                @update:is_optional="val => question.is_optional = val"
+                @remove="selectedQuestions.splice(index, 1)"
+            />
         </div>
 
         <div v-else class="text-center text-muted-foreground py-12">

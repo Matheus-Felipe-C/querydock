@@ -1,74 +1,105 @@
 <script setup lang="ts">
-import { ChevronUp, Copy, GripVertical, Trash } from 'lucide-vue-next';
+import { GripVertical, Trash2 } from 'lucide-vue-next';
 import Card from '../card/Card.vue';
 import Button from '../button/Button.vue';
 import Label from '../label/Label.vue';
 import Input from '../input/Input.vue';
-import { useId } from 'vue';
 import CardContent from '../card/CardContent.vue';
+// 1. Add missing component imports
+import Checkbox from '../checkbox/Checkbox.vue';
+import Badge from '../badge/Badge.vue';
+import { QuizQuestion } from '@/types/QuizQuestion.ts';
 
-const promptId = useId();
-const gradeWeightId = useId();
+const props = defineProps<{
+    question: QuizQuestion;
+    index: number;
+}>();
+
+const emit = defineEmits<{
+    'update:weight': [number];
+    'update:is_bonus': [boolean];
+    'update:is_optional': [boolean];
+    'remove': [];
+}>();
 </script>
 
 <template>
-    <Card>
-        <!-- Question header -->
-        <div class="flex items-center justify-between px-4 border-b">
-            <div class="flex items-center gap-2">
-                <GripVertical class="w-4 h-4 text-muted-foreground cursor-grab"></GripVertical>
-                <span class="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
-                    Question 1
-                </span>
-            </div>
-            <div class="flex items-center gap-1">
-                <Button variant="ghost" size="icon">
-                    <Copy class="w-4 h-4"></Copy>
+    <Card class="relative transition-all hover:border-muted-foreground/40">
+        <CardContent class="p-4 space-y-3">
+            <!-- Header Row -->
+            <div class="flex items-start gap-3">
+                <div class="drag-handle cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground pt-1">
+                    <GripVertical class="w-4 h-4" />
+                </div>
+
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                            Question {{ index + 1 }}
+                        </span>
+                        <Badge v-if="question.question.difficulty" variant="outline" class="text-xs">
+                            {{ question.question.difficulty }}
+                        </Badge>
+                    </div>
+
+                    <h4 class="font-medium text-sm sm:text-base line-clamp-2">
+                        {{ question.question.title }}
+                    </h4>
+                </div>
+
+                <Button variant="ghost" size="icon" class="text-muted-foreground hover:text-destructive shrink-0" @click="emit('remove')">
+                    <Trash2 class="w-4 h-4" />
                 </Button>
-                <Button variant="ghost" size="icon">
-                    <Trash class="w-4 h-4"></Trash>
-                </Button>
-                <Button variant="ghost" size="icon">
-                    <ChevronUp class="w-4 h-4"></ChevronUp>
-                </Button>
-            </div>
-        </div>
-
-        <CardContent>
-
-            <!-- Prompt + Grade Weight-->
-            <div class="grid grid-cols-4 gap-4 py-4">
-                <div class="col-span-3 space-y-2">
-                    <Label :for="promptId">Prompt / Scenario</Label>
-                    <Input :id="promptId"
-                        placeholder="Retrieve the names of all employees who have a salary greater than 5000" />
-                </div>
-                <div class="space-y-2">
-                    <Label :for="gradeWeightId">Grade Weight (Pts)</Label>
-                    <Input :id="gradeWeightId" type="number" placeholder="10" />
-                </div>
             </div>
 
-            <!-- Schema setup -->
-            <div class="space-y-2 mb-6">
-                <div class="flex items-center justify-between">
-                    <Label class="flex items-center gap-2">
-                        <span>Schema Setup (DDL/DML)</span>
-                    </Label>
-                    <span class="text-xs text-muted-foreground uppercase tracking-widest">PostgreSQL</span>
-                </div>
-                <div class="rounded-md bg-[#1e2433] text-sm font-mono text-blue-300 p-4 min-h-32">
-                    <!-- Replace this div with a CodeMirror/Monaco instance -->
-                    <p class="text-muted-foreground text-xs">Code editor goes here</p>
-                </div>
-            </div>
+            <hr class="border-border/60" />
 
-            <!-- Expected solution -->
-            <div class="space-y-2">
-                <Label>Expected solution</Label>
-                <div class="rounded-md bg-[#1e2433] text-sm font-mono text-blue-300 p-4 min-h-32">
-                    <!-- Replace with CodeMirror later -->
-                    <p class="textm-muted-foreground text-xs">Code editor goes here</p>
+            <!-- Controls Row -->
+            <div class="flex flex-wrap items-center justify-between gap-4 text-sm pt-1">
+                <div class="flex flex-wrap items-center gap-6">
+                    <!-- Point Weight -->
+                    <div class="flex items-center gap-2">
+                        <Label class="text-xs text-muted-foreground">Points / Weight</Label>
+                        <Input 
+                            type="number" 
+                            min="0" 
+                            step="0.5"
+                            class="w-20 h-8 text-sm" 
+                            :model-value="question.weight" 
+                            @update:model-value="val => emit('update:weight', Number(val))" 
+                        />
+                    </div>
+
+                    <!-- Is Bonus Toggle -->
+                    <div class="flex items-center gap-2">
+                        <!-- 2. Added shrink-0 class to prevent shrinking -->
+                        <Checkbox 
+                            :id="`bonus-${question.question.id}`" 
+                            :model-value="question.is_bonus"
+                            class="shrink-0"
+                            @update:model-value=" val => emit('update:is_bonus', val === true)"
+                        />
+                        <Label :for="`bonus-${question.question.id}`" class="text-xs cursor-pointer select-none">
+                            Bonus
+                        </Label>
+                    </div>
+
+                    <!-- Is Optional Toggle -->
+                    <div class="flex items-center gap-2">
+                        <Checkbox 
+                            :id="`optional-${question.question.id}`" 
+                            :model-value="question.is_optional"
+                            class="shrink-0"
+                            @update:model-value="val => emit('update:is_optional', val === true)"
+                        />
+                        <Label :for="`optional-${question.question.id}`" class="text-xs cursor-pointer select-none">
+                            Optional
+                        </Label>
+                    </div>
+                </div>
+
+                <div v-if="question.is_bonus" class="text-xs text-amber-600 font-medium">
+                    (Extra Credit)
                 </div>
             </div>
         </CardContent>
