@@ -22,6 +22,13 @@ class Question extends Model
         return $this->belongsTo(Dataset::class);
     }
 
+    public function quizzes()
+    {
+        return $this->belongsToMany(Quiz::class)
+            ->withPivot('weight', 'position')
+            ->withTimestamps();
+    }
+
     public function casts()
     {
         return [

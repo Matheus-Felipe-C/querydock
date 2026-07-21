@@ -64,6 +64,24 @@ class QuestionBankController extends Controller
         ]);
     }
 
+    public function picker(Request $request, Course $course)
+    {
+        $query = $course->questions();
+
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search .'%');
+        }
+
+        if ($request->filled('difficulty')) {
+            $query->where('difficulty', $request->difficulty);
+        }
+
+        return response()->json(
+            $query->orderBy('created_at')
+            ->paginate(12)
+        );
+    }
+
     public function store(Request $request, Course $course)
     {
         $validated = $request->validate([

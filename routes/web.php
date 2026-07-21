@@ -21,6 +21,7 @@ Route::get('/', function () {
 // Route::get('/quiz', [QuizController::class, 'index'])->name('quiz');
 
 Route::resource('courses.quizzes', QuizController::class)->scoped();
+Route::get('/courses/{course}/questions-picker', [QuestionBankController::class,'picker'])->name('courses.questions.picker');
 Route::resource('courses.questions', QuestionBankController::class)->scoped();
 Route::resource('courses.datasets', DatasetController::class)->scoped();
 

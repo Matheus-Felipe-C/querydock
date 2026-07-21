@@ -11,7 +11,9 @@ import ToggleGroup from '@/components/ui/toggle-group/ToggleGroup.vue';
 import ToggleGroupItem from '@/components/ui/toggle-group/ToggleGroupItem.vue';
 import { Course } from '@/types/course';
 import { Quiz } from '@/types/quiz';
+import { Link } from '@inertiajs/vue3';
 import { ListFilter, Plus } from 'lucide-vue-next';
+import { route } from 'ziggy-js';
 
 defineOptions({
     layout: AppLayout,
@@ -33,9 +35,11 @@ const props = defineProps<{
                 </p>
             </div>
             <div class="flex items-center gap-2 w-full sm:w-auto">
-                <Button class="w-full sm:w-auto justify-center">
-                    <Plus class="w-4 h-4" /> 
-                    Create new Quiz
+                <Button class="w-full sm:w-auto justify-center" as-child>
+                    <Link :href="route('courses.quizzes.create', course.id )">
+                        <Plus class="w-4 h-4" /> 
+                        Create new Quiz
+                    </Link>
                 </Button>
             </div>
         </section>

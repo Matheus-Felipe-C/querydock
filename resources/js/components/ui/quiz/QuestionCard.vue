@@ -6,7 +6,6 @@ import Label from '../label/Label.vue';
 import Input from '../input/Input.vue';
 import { useId } from 'vue';
 import CardContent from '../card/CardContent.vue';
-import AddNewItem from './AddNewItem.vue';
 
 const promptId = useId();
 const gradeWeightId = useId();
@@ -74,5 +73,4 @@ const gradeWeightId = useId();
             </div>
         </CardContent>
     </Card>
-    <AddNewItem label="Add new question"></AddNewItem>
 </template>
