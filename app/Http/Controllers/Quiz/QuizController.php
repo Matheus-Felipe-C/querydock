@@ -32,7 +32,7 @@ class QuizController extends Controller
     {
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
+            'description' => ['string'],
             'time_limit' => ['nullable'],
         ]);
 
