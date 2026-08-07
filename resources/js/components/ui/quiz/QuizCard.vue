@@ -49,7 +49,7 @@ const props = defineProps<{
                 </p>
                 <p class="font-medium text-muted-foreground flex gap-2 items-center min-w-0 truncate">
                     <Clock class="w-4 h-4 text-foreground shrink-0" />                    
-                    <span>{{ props.timeLimit }} mins</span>
+                    <span>{{ props.timeLimit ?? 0 }} mins</span>
                 </p>
                 <p class="font-medium text-muted-foreground flex gap-2 items-center min-w-0 truncate">
                     <User class="w-4 h-4 text-foreground shrink-0" />
