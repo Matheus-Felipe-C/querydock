@@ -34,7 +34,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    submit: [];
+    submit: [QuizQuestion[]];
 }>();
 
 const pageTitle = computed(() => {
@@ -50,6 +50,10 @@ function handleQuestionSelection(newQuestions: QuizQuestion[]) {
     selectedQuestions.value = [...selectedQuestions.value, ...newQuestions];
 
     props.form.questions = selectedQuestions.value.map(q => q.question.id);
+}
+
+function handleSubmit() {
+    emit('submit', selectedQuestions.value);
 }
 
 </script>
@@ -96,7 +100,7 @@ function handleQuestionSelection(newQuestions: QuizQuestion[]) {
                         Cancel
                     </Link>
                 </Button>
-                <Button :disabled="form.processing" @click="emit('submit')"
+                <Button :disabled="form.processing" @click="handleSubmit"
                     class="flex-1 sm:flex-initial justify-center">
                     {{ form.processing ? "Saving..." : "Save Changes" }}
                 </Button>

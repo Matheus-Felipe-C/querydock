@@ -2,7 +2,7 @@
 import Card from '../card/Card.vue';
 import CardHeader from '../card/CardHeader.vue';
 import CardTitle from '../card/CardTitle.vue';
-import { Clock, EllipsisVertical, List, Star, User } from 'lucide-vue-next';
+import { Clock, EllipsisVertical, List, User } from 'lucide-vue-next';
 import DropdownMenu from '../dropdown-menu/DropdownMenu.vue';
 import DropdownMenuTrigger from '../dropdown-menu/DropdownMenuTrigger.vue';
 import DropdownMenuContent from '../dropdown-menu/DropdownMenuContent.vue';
@@ -45,19 +45,15 @@ const props = defineProps<{
             <div class="grid grid-cols-2 gap-x-2 gap-y-3 sm:gap-4 text-sm">
                 <p class="font-medium text-muted-foreground flex gap-2 items-center min-w-0 truncate">
                     <List class="w-4 h-4 text-foreground shrink-0" /> 
-                    <span>15 Questions</span>
+                    <span>{{ props.questionCount }} Questions</span>
                 </p>
                 <p class="font-medium text-muted-foreground flex gap-2 items-center min-w-0 truncate">
                     <Clock class="w-4 h-4 text-foreground shrink-0" />                    
-                    <span>45 mins</span>
+                    <span>{{ props.timeLimit }} mins</span>
                 </p>
                 <p class="font-medium text-muted-foreground flex gap-2 items-center min-w-0 truncate">
                     <User class="w-4 h-4 text-foreground shrink-0" />
                     <span>128 students</span>
-                </p>
-                <p class="font-medium text-muted-foreground flex gap-2 items-center min-w-0 truncate">
-                    <Star class="w-4 h-4 text-foreground shrink-0" />
-                    <span>82% Avg</span>
                 </p>
             </div>
         </CardContent>

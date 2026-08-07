@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Quiz;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Quiz;
+use DB;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class QuizController extends Controller
@@ -36,9 +38,37 @@ class QuizController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'description' => ['string'],
             'time_limit' => ['nullable'],
+
+            'questions' => ['nullable', 'array'],
+            'questions.*.id' => ['required', Rule::exists('questions', 'id')],
+            'questions.*.weight' => ['required', 'numeric', 'min:0'],
+            'questions.*.position' => ['required', 'integer', 'min:1'],
+            'questions.*.is_bonus' => ['required', 'boolean'],
+            'questions.*.is_optional' => ['required', 'boolean'],
         ]);
 
-        $course->quizzes()->create($validated);
+        DB::transaction(function () use ($course, $validated) {
+            $quiz = $course->quizzes()->create([
+                'title'=> $validated['title'],
+                'description'=> $validated['description'] ?? null,
+                'time_limit'=> $validated['time_limit'] ?? null,
+            ]);
+
+            if (!empty($validated['questions'])) {
+                $attachData = [];
+
+                foreach ($validated['questions'] as $q) {
+                    $attachData[$q['id']] = [
+                        'weight' => $q['weight'],
+                        'position' => $q['position'],
+                        'is_bonus' => $q['is_bonus'],
+                        'is_optional' => $q['is_optional'],
+                    ];
+                }
+
+                $quiz->questions()->attach($attachData);
+            }
+        }); 
 
         return redirect()->route('courses.quizzes.index', $course);
     }
