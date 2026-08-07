@@ -31,10 +31,6 @@ function save(questions: QuizQuestion[]) {
             is_optional: q.is_optional,
         })),
     })).post(route('courses.quizzes.store', props.course.id));
-
-    form.post(route('courses.quizzes.store', {
-        course: props.course.id,
-    }))
 }
 </script>
 
