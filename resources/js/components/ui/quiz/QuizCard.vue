@@ -20,7 +20,7 @@ const props = defineProps<{
 </script>
 
 <template>
-    <Card class="flex flex-col h-full justify-between">
+    <Card class="flex flex-col justify-between">
         <CardHeader class="flex flex-row items-start justify-between gap-4">
             <div class="flex flex-col gap-2 min-w-0">
                 <CardTitle class="text-lg font-bold leading-tight wrap-break-word">{{ title }}</CardTitle>
