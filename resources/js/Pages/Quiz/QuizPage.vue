@@ -88,7 +88,13 @@ const props = defineProps<{
                 <p class="text-sm">Create your first quiz to get started.</p>
             </div>
             <div v-else>
-                <QuizCard />
+                <QuizCard
+                    v-for="quiz in props.quizzes"
+                    :key="quiz.id"
+                    :title="quiz.title",
+                    :question-count="quiz.questions_count"
+                    :time-limit="quiz.timeLimit"
+                />
             </div>
         </section>
     </div>

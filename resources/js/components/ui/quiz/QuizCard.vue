@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Card from '../card/Card.vue';
 import CardHeader from '../card/CardHeader.vue';
-import Badge from '../badge/Badge.vue';
 import CardTitle from '../card/CardTitle.vue';
 import { Clock, EllipsisVertical, List, Star, User } from 'lucide-vue-next';
 import DropdownMenu from '../dropdown-menu/DropdownMenu.vue';
@@ -12,10 +11,11 @@ import CardContent from '../card/CardContent.vue';
 import CardFooter from '../card/CardFooter.vue';
 import Button from '../button/Button.vue';
 
-// const props = defineProps<{
-//     course: Course;
-//     quiz: Quiz;
-// }>();
+const props = defineProps<{
+    title: string,
+    questionCount: number,
+    timeLimit: number,
+}>();
 
 </script>
 
@@ -23,10 +23,7 @@ import Button from '../button/Button.vue';
     <Card class="flex flex-col h-full justify-between">
         <CardHeader class="flex flex-row items-start justify-between gap-4">
             <div class="flex flex-col gap-2 min-w-0">
-                <div class="flex">
-                    <Badge class="bg-blue-100 text-blue-700 hover:bg-blue-200 px-2 py-1">Published</Badge>
-                </div>
-                <CardTitle class="text-lg font-bold leading-tight break-words">Midterm: Advanced Joins</CardTitle>
+                <CardTitle class="text-lg font-bold leading-tight wrap-break-word">{{ title }}</CardTitle>
             </div>
 
             <div class="shrink-0">

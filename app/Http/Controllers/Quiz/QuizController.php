@@ -13,11 +13,13 @@ class QuizController extends Controller
     public function index(Request $request, Course $course)
     {
 
-        $query = $course->quizzes();
+        $query = $course->quizzes()
+            ->withCount('questions')
+            ->get();
 
         return Inertia::render('Quiz/QuizPage', [
             'course' => $course,
-            'quizzes' => $query->get(),
+            'quizzes' => $query,
         ]);
     }
 
