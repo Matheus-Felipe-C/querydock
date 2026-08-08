@@ -49,12 +49,12 @@ class QuizController extends Controller
 
         DB::transaction(function () use ($course, $validated) {
             $quiz = $course->quizzes()->create([
-                'title'=> $validated['title'],
-                'description'=> $validated['description'] ?? null,
-                'time_limit'=> $validated['time_limit'] ?? null,
+                'title' => $validated['title'],
+                'description' => $validated['description'] ?? null,
+                'time_limit' => $validated['time_limit'] ?? null,
             ]);
 
-            if (!empty($validated['questions'])) {
+            if (! empty($validated['questions'])) {
                 $attachData = [];
 
                 foreach ($validated['questions'] as $q) {
@@ -68,7 +68,7 @@ class QuizController extends Controller
 
                 $quiz->questions()->attach($attachData);
             }
-        }); 
+        });
 
         return redirect()->route('courses.quizzes.index', $course);
     }
@@ -85,11 +85,37 @@ class QuizController extends Controller
     {
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
+            'description' => ['string'],
             'time_limit' => ['nullable'],
+
+            'questions' => ['nullable', 'array'],
+            'questions.*.id' => ['required', Rule::exists('questions', 'id')],
+            'questions.*.weight' => ['required', 'numeric', 'min:0'],
+            'questions.*.position' => ['required', 'integer', 'min:1'],
+            'questions.*.is_bonus' => ['required', 'boolean'],
+            'questions.*.is_optional' => ['required', 'boolean'],
         ]);
 
-        $quiz->update($validated);
+        DB::transaction(function () use ($quiz, $validated) {
+            $quiz->update([
+                'title' => $validated['title'],
+                'description' => $validated['description'] ?? null,
+                'time_limit' => $validated['time_limit'] ?? null,
+            ]);
+
+            $syncData = [];
+            if (! empty($validated['questions'])) {
+                foreach ($validated['questions'] as $q) {
+                    $syncData[$q['id']] = [
+                        'weight' => $q['weight'],
+                        'position' => $q['position'],
+                        'is_bonus' => $q['is_bonus'],
+                        'is_optional' => $q['is_optional'],
+                    ];
+                }
+            }
+            $quiz->questions()->sync($syncData);
+        });
 
         return redirect()->route('courses.quizzes.index', $course);
     }
