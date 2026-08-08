@@ -13,7 +13,7 @@ defineOptions({
 
 const props = defineProps<{
     course: Course;
-    quiz: Quiz;
+    quiz: Quiz & { questions?: any[]};
 }>();
 
 const form = useForm({
@@ -21,6 +21,14 @@ const form = useForm({
     instructions: props.quiz.instructions,
     time_limit: props.quiz.timeLimit,
 });
+
+const initialQuestions: QuizQuestion[] = (props.quiz.questions ?? []).map((q) => ({
+    question: q,
+    weight: q.pivot?.weight ?? 1,
+    position: q.pivot?.position ?? 1,
+    is_bonus: Boolean(q.pivot?.is_bonus),
+    is_optional: Boolean(q.pivot?.is_optional),
+}))
 
 function save(questions: QuizQuestion[]) {
     form.transform((data) => ({
@@ -43,6 +51,7 @@ function save(questions: QuizQuestion[]) {
     <QuizForm
         :form="form"
         :course="course"
+        :initial-questions="initialQuestions"
         @submit="save"
         mode="edit"
     />

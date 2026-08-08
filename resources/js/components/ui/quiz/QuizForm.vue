@@ -30,7 +30,8 @@ import Sortable from '../sortable/Sortable.vue';
 const props = defineProps<{
     form: any,
     mode: 'create' | 'edit',
-    course: Course
+    course: Course,
+    initialQuestions?: QuizQuestion[],
 }>();
 
 const emit = defineEmits<{
@@ -43,7 +44,7 @@ const pageTitle = computed(() => {
         : 'Create new Quiz';
 });
 
-const selectedQuestions = ref<QuizQuestion[]>([]);
+const selectedQuestions = ref<QuizQuestion[]>(props.initialQuestions ?? []);
 const pickerOpen = ref(false);
 
 function handleQuestionSelection(newQuestions: QuizQuestion[]) {

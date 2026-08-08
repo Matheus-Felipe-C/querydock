@@ -75,6 +75,11 @@ class QuizController extends Controller
 
     public function edit(Course $course, Quiz $quiz)
     {
+
+        $quiz->load(['questions' => function ($query) {
+            $query->orderBy('question_quiz.position', 'asc');
+        }]);
+
         return Inertia::render('Quiz/QuizEditPage', [
             'course' => $course,
             'quiz' => $quiz,
