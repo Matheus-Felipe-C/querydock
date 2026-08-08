@@ -91,9 +91,8 @@ const props = defineProps<{
                 <QuizCard
                     v-for="quiz in props.quizzes"
                     :key="quiz.id"
-                    :title="quiz.title",
-                    :question-count="quiz.questions_count"
-                    :time-limit="quiz.timeLimit"
+                    :quiz="quiz"
+                    :course-id="props.course.id"
                 />
             </template>
         </section>
