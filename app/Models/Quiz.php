@@ -17,8 +17,8 @@ class Quiz extends Model
         return $query
             ->when($filters['search'] ?? null, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('title', 'like', '%{$search}%')
-                    ->orWhere('instructions', 'like', '%{$search}%');
+                    $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('instructions', 'like', "%{$search}%");
                 });
             })
             ->when($filters['status'] ?? null, function($query, $status) {
