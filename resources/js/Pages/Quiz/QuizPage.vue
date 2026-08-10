@@ -4,19 +4,22 @@ import Button from '@/components/ui/button/Button.vue';
 import InputGroup from '@/components/ui/input-group/InputGroup.vue';
 import InputGroupAddon from '@/components/ui/input-group/InputGroupAddon.vue';
 import InputGroupInput from '@/components/ui/input-group/InputGroupInput.vue';
-import NativeSelect from '@/components/ui/native-select/NativeSelect.vue';
-import NativeSelectOption from '@/components/ui/native-select/NativeSelectOption.vue';
 import Pagination from '@/components/ui/pagination/Pagination.vue';
 import PaginationNext from '@/components/ui/pagination/PaginationNext.vue';
 import PaginationPrevious from '@/components/ui/pagination/PaginationPrevious.vue';
 import QuizCard from '@/components/ui/quiz/QuizCard.vue';
+import Select from '@/components/ui/select/Select.vue';
+import SelectContent from '@/components/ui/select/SelectContent.vue';
+import SelectItem from '@/components/ui/select/SelectItem.vue';
+import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
+import SelectValue from '@/components/ui/select/SelectValue.vue';
 import ToggleGroup from '@/components/ui/toggle-group/ToggleGroup.vue';
 import ToggleGroupItem from '@/components/ui/toggle-group/ToggleGroupItem.vue';
 import { Course } from '@/types/course';
 import { Quiz } from '@/types/quiz';
 import { Link, router } from '@inertiajs/vue3';
 import { ListFilter, Plus } from 'lucide-vue-next';
-import { PaginationList, PaginationListItem } from 'reka-ui';
+import { AcceptableValue, PaginationList, PaginationListItem } from 'reka-ui';
 import { reactive, watch } from 'vue';
 import { route } from 'ziggy-js';
 
@@ -55,20 +58,39 @@ const filterForm = reactive({
 
 let timeout: ReturnType<typeof setTimeout>;
 
+function applyFilters(immediate = false) {
+    clearTimeout(timeout);
+
+    const executeRequest = () => {
+        router.get(
+            route('courses.quizzes.index', props.course.id),
+            { ...filterForm },
+            { preserveState: true, replace: true }
+        );
+    };
+
+    if (immediate) {
+        executeRequest();
+    } else {
+        timeout = setTimeout(executeRequest, 300);
+    }
+}
+
 watch(
     () => ({ ...filterForm }),
-    (newFilters) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-            router.get(
-                route('courses.quizzes.index', props.course.id),
-                newFilters,
-                { preserveState: true, replace: true}
-            );
-        }, 300);
-    },
-    { deep: true},
+    () => applyFilters(false),
+    { deep: true }
 );
+
+function changeSort(sort: AcceptableValue) {
+    if (typeof sort !== 'string') {
+        return;
+    }
+
+    filterForm.sort = sort;
+
+    applyFilters(true);
+}
 
 function handlePageChange(page: number) {
     router.get(
@@ -132,10 +154,16 @@ function handlePageChange(page: number) {
                 </InputGroup>
 
                 <div class="w-full sm:w-48 shrink-0">
-                    <NativeSelect v-model="filterForm.sort">
-                        <NativeSelectOption value="latest">Sort by latest</NativeSelectOption>
-                        <NativeSelectOption value="oldest">Sort by oldest</NativeSelectOption>
-                    </NativeSelect>
+                    <Select :model-value="filterForm.sort" @update:model-value="changeSort">
+                        <SelectTrigger class="w-48">
+                            <SelectValue placeholder="Sort By.."/>
+                        </SelectTrigger>
+
+                        <SelectContent>
+                            <SelectItem value="latest">Sort by: latest</SelectItem>
+                            <SelectItem value="oldest">Sort by: oldest</SelectItem>
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
         </section>
