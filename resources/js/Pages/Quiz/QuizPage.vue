@@ -6,23 +6,83 @@ import InputGroupAddon from '@/components/ui/input-group/InputGroupAddon.vue';
 import InputGroupInput from '@/components/ui/input-group/InputGroupInput.vue';
 import NativeSelect from '@/components/ui/native-select/NativeSelect.vue';
 import NativeSelectOption from '@/components/ui/native-select/NativeSelectOption.vue';
+import Pagination from '@/components/ui/pagination/Pagination.vue';
+import PaginationNext from '@/components/ui/pagination/PaginationNext.vue';
+import PaginationPrevious from '@/components/ui/pagination/PaginationPrevious.vue';
 import QuizCard from '@/components/ui/quiz/QuizCard.vue';
 import ToggleGroup from '@/components/ui/toggle-group/ToggleGroup.vue';
 import ToggleGroupItem from '@/components/ui/toggle-group/ToggleGroupItem.vue';
 import { Course } from '@/types/course';
 import { Quiz } from '@/types/quiz';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { ListFilter, Plus } from 'lucide-vue-next';
+import { PaginationList, PaginationListItem } from 'reka-ui';
+import { reactive, watch } from 'vue';
 import { route } from 'ziggy-js';
 
 defineOptions({
     layout: AppLayout,
 })
 
+interface PaginatedCollection<T> {
+    data: T[];
+    links: Array<{
+        url: string | null;
+        label: string;
+        active: boolean;
+    }>;
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+}
+
 const props = defineProps<{
     course: Course;
-    quizzes: Quiz[];
+    quizzes: PaginatedCollection<Quiz>;
+    filters: {
+        search?: string;
+        status?: string;
+        sort?: string;
+    };
 }>();
+
+const filterForm = reactive({
+    search: props.filters.search ?? '',
+    status: props.filters.status ?? '',
+    sort: props.filters.sort ?? '',
+});
+
+let timeout: ReturnType<typeof setTimeout>;
+
+watch(
+    () => ({ ...filterForm }),
+    (newFilters) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            router.get(
+                route('courses.quizzes.index', props.course.id),
+                newFilters,
+                { preserveState: true, replace: true}
+            );
+        }, 300);
+    },
+    { deep: true},
+);
+
+function handlePageChange(page: number) {
+    router.get(
+        route('courses.quizzes.index', props.course.id),
+        {
+            ...props.filters,
+            page: page,
+        },
+        {
+            preserveState: true,
+            preserveScroll: true,
+        }
+    );
+}
 </script>
 
 <template>
@@ -47,8 +107,8 @@ const props = defineProps<{
         <!-- Search and filtering -->
         <section class="w-full flex flex-col gap-4 py-4 border rounded-lg lg:flex-row lg:items-center lg:justify-between">
             <div class="overflow-x-auto -mx-4 px-4 pb-1 sm:overflow-visible sm:mx-0 sm:px-0 sm:pb-0">
-                <ToggleGroup type="single" class="justify-start inline-flex w-full sm:w-auto">
-                    <ToggleGroupItem class="flex-1 sm:flex-initial" value="all" aria-label="Toggle all">
+                <ToggleGroup v-model="filterForm.status" type="single" class="justify-start inline-flex w-full sm:w-auto">
+                    <ToggleGroupItem class="flex-1 sm:flex-initial" value="" aria-label="Toggle all">
                         <p>All</p>
                     </ToggleGroupItem>
                     <ToggleGroupItem class="flex-1 sm:flex-initial" value="Published" aria-label="Toggle published">
@@ -65,14 +125,14 @@ const props = defineProps<{
 
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center w-full lg:max-w-2xl lg:justify-end">
                 <InputGroup class="max-w-2xl">
-                    <InputGroupInput placeholder="Filter by title..." />
+                    <InputGroupInput v-model="filterForm.search" placeholder="Filter by title..." />
                     <InputGroupAddon>
                         <ListFilter class="h-4 w-4" />
                     </InputGroupAddon>
                 </InputGroup>
 
                 <div class="w-full sm:w-48 shrink-0">
-                    <NativeSelect>
+                    <NativeSelect v-model="filterForm.sort">
                         <NativeSelectOption value="">Date Created</NativeSelectOption>
                         <NativeSelectOption value="last_month">Last Month</NativeSelectOption>
                     </NativeSelect>
@@ -89,12 +149,57 @@ const props = defineProps<{
             </div>
             <template v-else>
                 <QuizCard
-                    v-for="quiz in props.quizzes"
+                    v-for="quiz in props.quizzes.data"
                     :key="quiz.id"
                     :quiz="quiz"
                     :course-id="props.course.id"
                 />
             </template>
         </section>
+
+        <!-- Pagination controls -->
+        <div v-if="props.quizzes.total > props.quizzes.per_page" class="flex justify-center pt-6">
+            <Pagination
+                :total="props.quizzes.total" 
+                :items-per-page="props.quizzes.per_page"
+                :sibling-count="1"
+                :default-page="props.quizzes.current_page"
+                :page="props.quizzes.current_page"
+                @update:page="handlePageChange"
+            >
+                <PaginationList v-slot="{ items }" class="flex items-center gap-1">
+                    <PaginationPrevious :disabled="props.quizzes.current_page === 1" />
+
+                    <template v-for="(item, index) in items">
+                        <PaginationListItem
+                            v-if="item.type === 'page'"
+                            :key="index"
+                            :value="item.value"
+                            as-child
+                        >
+                            <Button
+                                class="w-9 h-9 p-0 text-sm"
+                                :variant="item.value === props.quizzes.current_page ? 'default' : 'outline'"
+                                @click="handlePageChange(item.value)"
+                            >
+                                {{ item.value }}
+                            </Button>
+                        </PaginationListItem>
+
+                        <span
+                            v-else
+                            :key="`ellipsis-${index}`"
+                            class="w-9 h-9 flex items-center justify-center text-sm text-muted-foreground"
+                        >
+                            &#8230;
+                        </span>
+                    </template>
+
+                    <PaginationNext
+                        :disabled="props.quizzes.current_page === props.quizzes.last_page"
+                    />
+                </PaginationList>
+            </Pagination>
+        </div>
     </div>
 </template>

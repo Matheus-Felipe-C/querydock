@@ -19,7 +19,7 @@ const props = defineProps<{
 const form = useForm({
     title: props.quiz.title,
     instructions: props.quiz.instructions,
-    time_limit: props.quiz.timeLimit,
+    time_limit: props.quiz.time_limit,
 });
 
 const initialQuestions: QuizQuestion[] = (props.quiz.questions ?? []).map((q) => ({

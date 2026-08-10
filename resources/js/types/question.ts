@@ -1,4 +1,5 @@
 export interface Question {
+    pivot: any;
     id: number,
     title: string,
     description: string,

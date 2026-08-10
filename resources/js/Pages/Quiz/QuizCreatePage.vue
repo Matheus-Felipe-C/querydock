@@ -17,7 +17,7 @@ const props = defineProps<{
 const form = useForm({
     title: '',
     instructions: '',
-    time_limit: '',
+    time_limit: null,
 });
 
 function save(questions: QuizQuestion[]) {
