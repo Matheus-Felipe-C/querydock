@@ -133,8 +133,8 @@ function handlePageChange(page: number) {
 
                 <div class="w-full sm:w-48 shrink-0">
                     <NativeSelect v-model="filterForm.sort">
-                        <NativeSelectOption value="">Date Created</NativeSelectOption>
-                        <NativeSelectOption value="last_month">Last Month</NativeSelectOption>
+                        <NativeSelectOption value="latest">Sort by latest</NativeSelectOption>
+                        <NativeSelectOption value="oldest">Sort by oldest</NativeSelectOption>
                     </NativeSelect>
                 </div>
             </div>
