@@ -37,6 +37,7 @@ function deleteQuiz() {
     )
 };
 
+
 </script>
 
 <template>
@@ -119,7 +120,7 @@ function deleteQuiz() {
         </CardContent>
 
         <CardFooter class="flex flex-wrap gap-3 justify-between items-center pt-0">
-            <p class="text-muted-foreground italic text-xs">Edited 2 hours ago</p>
+            <p class="text-muted-foreground italic text-xs">Edited {{ quiz.updated_at_human }}  </p>
             <div class="flex items-center gap-1">
                 <Button variant="ghost" size="sm">Preview</Button>
                 <Button size="sm">Results</Button>

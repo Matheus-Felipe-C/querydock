@@ -10,4 +10,5 @@ export interface Quiz {
     questions_count: number;
     created_at: string;
     updated_at: string;
+    updated_at_human: string;
 }

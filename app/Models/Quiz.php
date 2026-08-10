@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Attribute;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Casts\Attribute as CastsAttribute; // Correct Laravel Cast Import
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +13,17 @@ use Illuminate\Database\Eloquent\Model;
 class Quiz extends Model
 {
     use HasFactory;
+
+    protected $appends = [
+        'updated_at_human',
+    ];
+
+    protected function updatedAtHuman(): CastsAttribute
+    {
+        return CastsAttribute::make(
+            get: fn () => $this->updated_at?->diffForHumans(['short' => true])
+        );
+    }
 
     public function scopeFilter(Builder $query, array $filters): Builder
     {
@@ -49,4 +62,6 @@ class Quiz extends Model
                 )
             ->withTimestamps();
     }
+
+ 
 }
