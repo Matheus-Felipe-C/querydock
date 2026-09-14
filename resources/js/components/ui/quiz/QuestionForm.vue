@@ -33,6 +33,13 @@ import SqlEditor from '@/components/ui/quiz/SqlEditor.vue';
 import Alert from '../alert/Alert.vue';
 import AlertTitle from '../alert/AlertTitle.vue';
 import AlertDescription from '../alert/AlertDescription.vue';
+import Command from '../command/Command.vue';
+import CommandInput from '../command/CommandInput.vue';
+import CommandList from '../command/CommandList.vue';
+import CommandEmpty from '../command/CommandEmpty.vue';
+import CommandItem from '../command/CommandItem.vue';
+import CommandGroup from '../command/CommandGroup.vue';
+import { Dataset } from '@/types/dataset.ts';
 
 defineOptions({
     layout: AppLayout,
@@ -42,6 +49,7 @@ const props = defineProps<{
     form: any,
     mode: 'create' | 'edit',
     course: Course;
+    datasets: Dataset[];
 }>();
 
 const emit = defineEmits<{
@@ -96,6 +104,20 @@ const questionStatus = computed(() => {
     };
 })
 
+const selectedDataset = computed(() => {
+    if (!props.form.dataset_id) return null;
+
+    return props.datasets.find((d) => d.id === props.form.dataset_id) ?? null;
+});
+
+function selectDataset(id: number) {
+    props.form.dataset_id = id;
+}
+
+function clearDataset() {
+    props.form.dataset_id = null;
+}
+
 </script>
 
 <template>
@@ -140,7 +162,8 @@ const questionStatus = computed(() => {
                         Cancel
                     </Link>
                 </Button>
-                <Button :disabled="form.processing" @click="emit('submit')" class="flex-1 sm:flex-initial justify-center">
+                <Button :disabled="form.processing" @click="emit('submit')"
+                    class="flex-1 sm:flex-initial justify-center">
                     {{ form.processing ? "Saving..." : "Save Changes" }}
                 </Button>
             </div>
@@ -170,12 +193,16 @@ const questionStatus = computed(() => {
                                         :class="{ 'text-destructive': form.errors.difficulty }">Question Difficulty<span
                                             class="text-red-500">*</span></Label>
                                     <ToggleGroup type="single" required v-model="form.difficulty" variant="outline"
-                                        size="lg" class="w-full justify-start gap-2" :class="{ 'text-destructive': form.errors.difficulty }">
-                                        <ToggleGroupItem class="flex-1 max-w[120px]" value="easy" aria-label="Easy difficulty">Easy
+                                        size="lg" class="w-full justify-start gap-2"
+                                        :class="{ 'text-destructive': form.errors.difficulty }">
+                                        <ToggleGroupItem class="flex-1 max-w[120px]" value="easy"
+                                            aria-label="Easy difficulty">Easy
                                         </ToggleGroupItem>
-                                        <ToggleGroupItem class="flex-1 max-w[120px]" value="medium" aria-label="Medium difficulty">
+                                        <ToggleGroupItem class="flex-1 max-w[120px]" value="medium"
+                                            aria-label="Medium difficulty">
                                             Medium</ToggleGroupItem>
-                                        <ToggleGroupItem class="flex-1 max-w[120px]" value="hard" aria-label="Hard difficulty">Hard
+                                        <ToggleGroupItem class="flex-1 max-w[120px]" value="hard"
+                                            aria-label="Hard difficulty">Hard
                                         </ToggleGroupItem>
                                     </ToggleGroup>
                                     <p v-if="form.errors.difficulty" class="text-sm font-medium text-destructive mt-1">
@@ -216,10 +243,29 @@ const questionStatus = computed(() => {
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                         <p v-if="form.errors.description" class="text-sm font-medium text-destructive mt-1">
+                        <p v-if="form.errors.description" class="text-sm font-medium text-destructive mt-1">
                             {{ form.errors.description }}
                         </p>
-                        <SqlEditor min-height="300px" />
+
+                        <div v-if="selectedDataset" class="relative">
+                            <Card class="bg-muted/40 border-primary/20 shadow-xs">
+                                
+                            </Card>
+                        </div>
+
+                        <Command class="rounded-lg border shadow-md md:min-w-112.5">
+                            <CommandInput placeholder="Select an existing dataset..." />
+                            <CommandList>
+                                <CommandEmpty>No results found.</CommandEmpty>
+                                <CommandGroup>
+                                    <CommandItem v-for="dataset in datasets" :key="dataset.id" :value="dataset.id">
+                                        {{ dataset.name }}
+                                    </CommandItem>
+                                </CommandGroup>
+                            </CommandList>
+                        </Command>
+
+                        <!-- <SqlEditor min-height="300px" /> -->
                     </CardContent>
                 </Card>
             </div>

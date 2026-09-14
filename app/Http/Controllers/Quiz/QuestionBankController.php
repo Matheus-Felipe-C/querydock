@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Quiz;
 
 use App\Models\Course;
 use App\Models\Question;
+use App\Models\Dataset;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
@@ -60,7 +61,10 @@ class QuestionBankController extends Controller
     public function create(Course $course)
     {
         return Inertia::render('Quiz/QuestionCreatePage', [
-            'course' => $course
+            'course' => $course,
+            'datasets' => Dataset::select(['id', 'name', 'description'])
+                ->latest()
+                ->get(),
         ]);
     }
 
@@ -101,7 +105,10 @@ class QuestionBankController extends Controller
     public function edit(Course $course, Question $question) {
         return Inertia::render('Quiz/QuestionEditPage', [
             'course' => $course,
-            'question' => $question
+            'question' => $question,
+            'datasets'  => Dataset::select(['id', 'name', 'description'])
+                ->latest()
+                ->get(),
         ]);
     }
 

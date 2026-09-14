@@ -31,7 +31,7 @@ const props = defineProps<{
 }>();
 
 const sqlPreview = computed(() => {
-    const lines = props.dataset.sql_script.split('\n');
+    const lines = props.dataset.sql_script!.split('\n');
     if (lines.length > 5) {
         return lines.slice(0, 5).join('\n') + '\n...';
     }

@@ -5,6 +5,7 @@ import { Course } from '@/types/course';
 import { Question } from '@/types/question';
 import { route } from 'ziggy-js';
 import QuestionForm from '@/components/ui/quiz/QuestionForm.vue';
+import { Dataset } from '@/types/dataset';
 
 defineOptions({
     layout: AppLayout,
@@ -13,6 +14,7 @@ defineOptions({
 const props = defineProps<{
     course: Course;
     question: Question;
+    datasets: Dataset[];
 }>();
 
 const form = useForm({
@@ -21,6 +23,7 @@ const form = useForm({
     difficulty: props.question.difficulty,
     topics: props.question.topics,
     expected_answer: props.question.expected_answer,
+    dataset_id: null,
 })
 
 const save = () => {
@@ -38,6 +41,7 @@ const save = () => {
     <QuestionForm
         :form="form"
         :course="course"
+        :datasets="datasets"
         mode="edit"
         @submit="save"
     />
