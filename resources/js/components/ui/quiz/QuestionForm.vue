@@ -91,7 +91,7 @@ const executionResult = ref<QueryExecutionResult>({
 });
 
 const questionStatus = computed(() => {
-    if (executionResult.value?.success) {
+    if (props.form.question_id) {
         return {
             label: 'Published',
             variant: "default" as const,

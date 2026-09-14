@@ -24,6 +24,7 @@ const form = useForm({
     topics: props.question.topics,
     expected_answer: props.question.expected_answer,
     dataset_id: props.question.dataset_id,
+    question_id: props.question.id,
 })
 
 const save = () => {
