@@ -1,6 +1,7 @@
 export interface Question {
     pivot: any;
     id: number,
+    dataset_id: number,
     title: string,
     description: string,
     difficulty: 'EASY' | 'MEDIUM' | 'HARD',

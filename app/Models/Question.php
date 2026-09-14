@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['course_id', 'title', 'description', 'difficulty', 'topics', 'starter_code', 'expected_answer'])]
+#[Fillable(['course_id', 'dataset_id', 'title', 'description', 'difficulty', 'topics', 'starter_code', 'expected_answer'])]
 class Question extends Model
 {
     use HasFactory;
-    
+
     public function course()
     {
         return $this->belongsTo(Course::class);

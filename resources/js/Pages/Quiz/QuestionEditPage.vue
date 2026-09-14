@@ -23,7 +23,7 @@ const form = useForm({
     difficulty: props.question.difficulty,
     topics: props.question.topics,
     expected_answer: props.question.expected_answer,
-    dataset_id: null,
+    dataset_id: props.question.dataset_id,
 })
 
 const save = () => {

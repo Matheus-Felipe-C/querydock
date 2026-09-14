@@ -47,7 +47,7 @@ class QuestionBankController extends Controller
                 ->unique()
                 ->sort()
                 ->values(),
-                
+
 
             'filters' => [
                 'search' => $request->search,
@@ -89,6 +89,7 @@ class QuestionBankController extends Controller
     public function store(Request $request, Course $course)
     {
         $validated = $request->validate([
+            'dataset_id' => 'nullable|exists:datasets,id',
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'difficulty' => ['required', 'in:easy,medium,hard'],
@@ -114,6 +115,7 @@ class QuestionBankController extends Controller
 
     public function update(Request $request, Course $course, Question $question) {
         $validated = $request->validate([
+            'dataset_id' => 'nullable|exists:datasets,id',
             'title' => ['required'],
             'description' => ['required'],
             'difficulty' => ['required'],
@@ -129,7 +131,7 @@ class QuestionBankController extends Controller
 
     public function destroy(Request $request, Course $course, Question $question) {
         $question->delete();
-        
+
         return redirect()->route('courses.questions.index', $course);
     }
 
