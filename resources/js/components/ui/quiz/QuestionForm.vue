@@ -24,7 +24,7 @@ import Textarea from '@/components/ui/textarea/Textarea.vue';
 import ToggleGroup from '@/components/ui/toggle-group/ToggleGroup.vue';
 import ToggleGroupItem from '@/components/ui/toggle-group/ToggleGroupItem.vue';
 import { Link } from '@inertiajs/vue3';
-import { CheckCircle2, CircleAlert, FileCode, LoaderCircle, Play } from 'lucide-vue-next';
+import { CheckCircle2, CircleAlert, FileCode, LoaderCircle, Play, Database, X } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import { Course } from '@/types/course';
 import { route } from 'ziggy-js';
@@ -104,18 +104,22 @@ const questionStatus = computed(() => {
     };
 })
 
-const selectedDataset = computed(() => {
-    if (!props.form.dataset_id) return null;
+const selectedDatasetId = ref<number | null>(props.form.dataset_id);
 
-    return props.datasets.find((d) => d.id === props.form.dataset_id) ?? null;
+const selectedDataset = computed(() => {
+    if (!selectedDatasetId.value) return null;
+
+    return props.datasets.find((d) => d.id === selectedDatasetId.value) ?? null;
 });
 
 function selectDataset(id: number) {
     props.form.dataset_id = id;
+    selectedDatasetId.value = id;
 }
 
 function clearDataset() {
     props.form.dataset_id = null;
+    selectedDatasetId.value = null;
 }
 
 </script>
@@ -248,22 +252,53 @@ function clearDataset() {
                         </p>
 
                         <div v-if="selectedDataset" class="relative">
-                            <Card class="bg-muted/40 border-primary/20 shadow-xs">
-                                
+                            <Card class="bg-muted/40 border-primary/20 shadow-xs p-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="space-y-1">
+                                        <div class="flex items-center gap-2">
+                                            <Badge variant="outline" class="gap-1">
+                                                <Database class="w-3.5 h-3.5" />
+                                                Dataset
+                                            </Badge>
+                                            <h4 class="font-semibold text-sm">{{ selectedDataset.name }}</h4>
+                                        </div>
+                                        <p v-if="selectedDataset.description" class="text-xs text-muted-foreground">
+                                            {{ selectedDataset.description }}
+                                        </p>
+                                    </div>
+
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        class="text-xs text-muted-foreground hover:text-destructive"
+                                        @click="clearDataset"
+                                    >
+                                        <X class="w-4 h-4 mr-1" />
+                                        Change Dataset
+                                    </Button>
+                                </div>
                             </Card>
                         </div>
 
-                        <Command class="rounded-lg border shadow-md md:min-w-112.5">
-                            <CommandInput placeholder="Select an existing dataset..." />
-                            <CommandList>
-                                <CommandEmpty>No results found.</CommandEmpty>
-                                <CommandGroup>
-                                    <CommandItem v-for="dataset in datasets" :key="dataset.id" :value="dataset.id">
-                                        {{ dataset.name }}
-                                    </CommandItem>
-                                </CommandGroup>
-                            </CommandList>
-                        </Command>
+                        <div v-else>
+                            <Command class="rounded-lg border shadow-md md:min-w-112.5">
+                                <CommandInput placeholder="Select an existing dataset..." />
+                                <CommandList>
+                                    <CommandEmpty>No results found.</CommandEmpty>
+                                    <CommandGroup>
+                                        <CommandItem
+                                            v-for="dataset in datasets"
+                                            :key="dataset.id"
+                                            :value="String(dataset.id)"
+                                            @select="selectDataset(dataset.id)"
+                                        >
+                                            {{ dataset.name }}
+                                        </CommandItem>
+                                    </CommandGroup>
+                                </CommandList>
+                            </Command>
+                        </div>
 
                         <!-- <SqlEditor min-height="300px" /> -->
                     </CardContent>
