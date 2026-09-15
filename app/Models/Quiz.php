@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute as CastsAttribute;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(['course_id', 'title', 'instructions', 'time_limit'])]
 class Quiz extends Model
@@ -55,7 +56,7 @@ class Quiz extends Model
     {
         return $this->belongsToMany(Question::class)
             ->withPivot(
-                'weight', 
+                'weight',
                 'position',
                 'is_bonus',
                 'is_optional',
@@ -63,5 +64,8 @@ class Quiz extends Model
             ->withTimestamps();
     }
 
- 
+    public function submissions(): HasMany
+    {
+        return $this->hasMany(Submission::class);
+    }
 }

@@ -6,6 +6,7 @@ use App\Models\LtiPlatform;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 #[Fillable(['lti_context_id', 'lti_platform_id', 'name'])]
 class Course extends Model
@@ -37,5 +38,10 @@ class Course extends Model
     public function quizzes()
     {
         return $this->hasMany(Quiz::class);
+    }
+
+    public function submissions(): HasManyThrough
+    {
+        return $this->hasManyThrough(Submission::class, Quiz::class);
     }
 }
