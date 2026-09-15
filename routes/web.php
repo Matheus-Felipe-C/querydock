@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\DevController;
 use App\Http\Controllers\Quiz\DatasetController;
 use App\Http\Controllers\Quiz\QuestionBankController;
@@ -17,6 +18,7 @@ Route::get('/', function () {
     ]);
 })->name('welcome');
 
+Route::get('/courses/{course}/dashboard', [DashboardController::class], 'show')->name('courses.dashboard');
 
 // Route::get('/quiz', [QuizController::class, 'index'])->name('quiz');
 
