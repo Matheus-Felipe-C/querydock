@@ -23,14 +23,17 @@ const navItems = computed(() => {
     const courseId = course.value?.id;
 
     return [
-        { 
-            label: 'Dashboard', 
-            icon: LayoutDashboard, 
-            name: 'welcome' 
+        {
+            label: 'Dashboard',
+            icon: LayoutDashboard,
+            name: 'courses.dashboard',
+            params: {
+                course: courseId,
+            }
         },
-        { 
-            label: 'Quizzes', 
-            icon: BookOpen, 
+        {
+            label: 'Quizzes',
+            icon: BookOpen,
             name: 'courses.quizzes.index',
             params: {
                 course: courseId,

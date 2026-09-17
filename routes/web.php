@@ -18,7 +18,8 @@ Route::get('/', function () {
     ]);
 })->name('welcome');
 
-Route::get('/courses/{course}/dashboard', [DashboardController::class], 'show')->name('courses.dashboard');
+Route::get('/courses/{course}/dashboard', [DashboardController::class, 'show'])->name('courses.dashboard');
+Route::get('/courses/{course}/dashboard/quizzes', [DashboardController::class, 'indexQuizzes'])->name('courses.dashboard.indexQuizzes');
 
 // Route::get('/quiz', [QuizController::class, 'index'])->name('quiz');
 

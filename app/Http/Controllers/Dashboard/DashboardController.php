@@ -11,10 +11,20 @@ use Inertia\Inertia;
 class DashboardController extends Controller
 {
     public function __construct(private DashboardService $dashboardService) {}
-    public function index(Course $course)
+    public function show(Course $course)
     {
         $data = $this->dashboardService->getDashboardData($course);
 
-        return Inertia::render('Dashboard', $data);
+        return Inertia::render('Dashboard/DashboardPage', $data);
+    }
+
+    public function indexQuizzes(Course $course)
+    {
+        $quizzes = $this->dashboardService->getRecentQuizzes($course);
+
+        return Inertia::render('Dashboard/DashboardQuizzesPage', [
+            'course' => $course,
+            'recent_quizzes' => $quizzes
+        ]);
     }
 }
