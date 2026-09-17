@@ -127,16 +127,12 @@ const summaryStrip = computed(() => {
                                 <TableCell colspan="5" class="text-muted-foreground text-sm">
                                     Showing {{ lastFiveQuizzes.length }} out of {{ props.recent_quizzes.length }} active quizzes
                                 </TableCell>
-                                <TableCell>
-                                    <Button
-                                        variant="default"
-                                        class="flex flex-row items-center gap-2"
-                                    >
-                                        <a :href="route('courses.dashboard.indexQuizzes', props.course.id)">
-                                           View all {{ props.recent_quizzes.length }} quizzes <ArrowRight class="w-4 h-4" />
-                                        </a>
-
-                                    </Button>
+                                <TableCell class="flex justify-end">
+                                    <Link :href="route('courses.dashboard.indexQuizzes', props.course.id)">
+                                        <Button variant="default" class="flex flex-row items-center gap-2">
+                                            View all {{ props.recent_quizzes.length }} quizzes <ArrowRight class="w-4 h-4" />
+                                        </Button>
+                                    </Link>
                                 </TableCell>
                             </TableRow>
                         </TableFooter>

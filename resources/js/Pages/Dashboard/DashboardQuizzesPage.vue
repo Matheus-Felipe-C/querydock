@@ -14,6 +14,16 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Course } from "@/types/course.ts";
 import { QuizSummary } from "@/types/dashboard.ts";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator
+} from "@/components/ui/breadcrumb";
+import {Link} from "@inertiajs/vue3";
+import {route} from "ziggy-js";
 
 defineOptions({
     layout: AppLayout,
@@ -26,6 +36,25 @@ const props = defineProps<{
 </script>
 
 <template>
+    <div class="w-full mx-auto flex flex-col gap-2 px-4">
+        <Breadcrumb>
+            <BreadcrumbList>
+                <BreadcrumbItem>
+                    <BreadcrumbLink as-child>
+                        <Link :href="route('courses.dashboard', course.id)">
+                            Dashboard
+                        </Link>
+                    </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                    <BreadcrumbPage>
+                        Show all recent quizzes
+                    </BreadcrumbPage>
+                </BreadcrumbItem>
+            </BreadcrumbList>
+        </Breadcrumb>
+    </div>
     <section class="w-full mx-auto py-4 px-4 md:px-0">
         <Card>
             <CardHeader class="flex justify-between">
