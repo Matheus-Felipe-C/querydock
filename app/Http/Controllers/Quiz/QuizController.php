@@ -15,7 +15,7 @@ class QuizController extends Controller
     public function index(Request $request, Course $course)
     {
         $filters = $request->only(['search', 'status', 'sort']);
-    
+
         $query = $course->quizzes()
             ->withCount('questions')
             ->filter($filters)
@@ -75,6 +75,14 @@ class QuizController extends Controller
         });
 
         return redirect()->route('courses.quizzes.index', $course);
+    }
+
+    public function show(Course $course, Quiz $quiz)
+    {
+        return Inertia::render('Quiz/QuizResultsPage', [
+            'course' => $course,
+            'quiz' => $quiz,
+        ]);
     }
 
     public function edit(Course $course, Quiz $quiz)

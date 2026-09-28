@@ -22,7 +22,7 @@ class Quiz extends Model
     protected function updatedAtHuman(): CastsAttribute
     {
         return CastsAttribute::make(
-            get: fn () => $this->updated_at?->diffForHumans(['short' => true])
+            get: fn() => $this->updated_at?->diffForHumans(['short' => true])
         );
     }
 
@@ -32,20 +32,27 @@ class Quiz extends Model
             ->when($filters['search'] ?? null, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('instructions', 'like', "%{$search}%");
+                        ->orWhere('instructions', 'like', "%{$search}%");
                 });
             })
-            ->when($filters['status'] ?? null, function($query, $status) {
+            ->when($filters['status'] ?? null, function ($query, $status) {
                 $query->where('status', $status);
             })
-            ->when($filters['sort'] ?? null, function($query, $sort) {
-                match($sort) {
+            ->when($filters['sort'] ?? null, function ($query, $sort) {
+                match ($sort) {
                     'oldest' => $query->orderBy('created_at', 'asc'),
-                    default => $query->orderBy('created_at','desc'),
+                    default => $query->orderBy('created_at', 'desc'),
                 };
-            }, function($query) {
+            }, function ($query) {
                 $query->latest();
             });
+    }
+
+    public function scopeWithStats($query)
+    {
+        return $query->withCount('questions')
+            ->withCount('submissions')
+            ->withAvg(['submissions as avg_score' => fn ($q) => $q->where('status', 'completed')], 'score');
     }
     public function course()
     {

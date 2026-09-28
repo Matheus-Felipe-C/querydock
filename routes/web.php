@@ -6,6 +6,7 @@ use App\Http\Controllers\DevController;
 use App\Http\Controllers\Quiz\DatasetController;
 use App\Http\Controllers\Quiz\QuestionBankController;
 use App\Http\Controllers\Quiz\QuizController;
+use App\Http\Controllers\Quiz\QuizSummaryController;
 use App\Http\Middleware\EnsureLTISession;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,6 +28,8 @@ Route::resource('courses.quizzes', QuizController::class)->scoped();
 Route::get('/courses/{course}/questions-picker', [QuestionBankController::class,'picker'])->name('courses.questions.picker');
 Route::resource('courses.questions', QuestionBankController::class)->scoped();
 Route::resource('courses.datasets', DatasetController::class)->scoped();
+Route::get('/courses/{course}/quizzes/{quiz}/dashboard', [QuizSummaryController::class, 'show'])
+    ->name('courses.quizzes.dashboard');
 
 // Public (LTI entry)
 Route::any('/lti', [App\Http\Controllers\LTIController::class, 'ltiMessage']);

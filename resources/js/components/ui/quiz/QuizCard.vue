@@ -105,11 +105,11 @@ function deleteQuiz() {
         <CardContent>
             <div class="grid grid-cols-2 gap-x-2 gap-y-3 sm:gap-4 text-sm">
                 <p class="font-medium text-muted-foreground flex gap-2 items-center min-w-0 truncate">
-                    <List class="w-4 h-4 text-foreground shrink-0" /> 
+                    <List class="w-4 h-4 text-foreground shrink-0" />
                     <span>{{ props.quiz.questions_count }} Questions</span>
                 </p>
                 <p class="font-medium text-muted-foreground flex gap-2 items-center min-w-0 truncate">
-                    <Clock class="w-4 h-4 text-foreground shrink-0" />                    
+                    <Clock class="w-4 h-4 text-foreground shrink-0" />
                     <span>{{ props.quiz.time_limit ?? 0 }} mins</span>
                 </p>
                 <p class="font-medium text-muted-foreground flex gap-2 items-center min-w-0 truncate">
@@ -123,7 +123,11 @@ function deleteQuiz() {
             <p class="text-muted-foreground italic text-xs">Edited {{ quiz.updated_at_human }}  </p>
             <div class="flex items-center gap-1">
                 <Button variant="ghost" size="sm">Preview</Button>
-                <Button size="sm">Results</Button>
+                <Button size="sm" as-child>
+                    <Link :href="route('courses.quizzes.dashboard', [courseId, quiz])">
+                        Results
+                    </Link>
+                </Button>
             </div>
         </CardFooter>
     </Card>

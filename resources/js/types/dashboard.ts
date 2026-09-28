@@ -10,4 +10,6 @@ export interface DashboardSummary {
 export interface QuizSummary extends Pick<Quiz, 'id' | 'title' | 'questions_count' | 'updated_at' | 'updated_at_human'>{
     submissions_count: number,
     avg_score: number,
+    median_score: number,
+    avg_completion_seconds: number,
 }
