@@ -21,7 +21,7 @@ class LTIController extends Controller
             $tool->handleRequest();
 
             if ($tool->getLaunchType() === $tool::LAUNCH_TYPE_LAUNCH) {
-               ['platform' => $platform, 'user' => $user, 'course' => $course] = $this->ltiSyncService->sync($tool);
+               ['platform' => $platform, 'user' => $user, 'course' => $course, 'role' => $role] = $this->ltiSyncService->sync($tool);
 
                session([
                 'lti_authenticated' => true,
@@ -29,6 +29,7 @@ class LTIController extends Controller
                 'user_id' => $user->id,
                 'course_id' => $course?->id,
                 'resource_link_id' => $tool->resourceLink->getRecordId(),
+                'lti_role' => $role,
                ]);
 
                 return redirect('/app');

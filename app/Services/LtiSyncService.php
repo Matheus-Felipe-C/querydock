@@ -9,7 +9,7 @@ use LonghornOpen\LaravelCelticLTI\LtiTool;
 
 class LtiSyncService
 {
-    
+
     public function sync(LtiTool $tool): array
     {
         $platform = LtiPlatform::updateOrCreate(
@@ -31,6 +31,7 @@ class LtiSyncService
         );
 
         $course = null;
+        $role = null;
 
         if ($tool->context) {
             $course = Course::updateOrCreate(
@@ -49,6 +50,6 @@ class LtiSyncService
             ]);
         }
 
-        return compact('platform', 'user', 'course');
+        return compact('platform', 'user', 'course', 'role');
     }
 }
