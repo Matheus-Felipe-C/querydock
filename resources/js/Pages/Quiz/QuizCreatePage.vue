@@ -30,7 +30,7 @@ function save(questions: QuizQuestion[]) {
             is_bonus: q.is_bonus,
             is_optional: q.is_optional,
         })),
-    })).post(route('courses.quizzes.store', props.course.id));
+    })).post(route('intructor.courses.quizzes.store', props.course.id));
 }
 </script>
 

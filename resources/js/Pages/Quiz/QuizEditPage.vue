@@ -40,8 +40,8 @@ function save(questions: QuizQuestion[]) {
             is_bonus: q.is_bonus,
             is_optional: q.is_optional,
         })),
-    })).put(route('courses.quizzes.update', {
-        course: props.course.id, 
+    })).put(route('instructor.courses.quizzes.update', {
+        course: props.course.id,
         quiz: props.quiz,
     }));
 }

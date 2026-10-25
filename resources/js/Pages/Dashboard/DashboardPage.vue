@@ -62,7 +62,7 @@ const summaryStrip = computed(() => {
                     as-child
                     class="flex-1 sm:flex-initial justify-center"
                 >
-                    <Link :href="route(`courses.quizzes.create`, course.id)">
+                    <Link :href="route(`instructor.courses.quizzes.create`, course.id)">
                         <Plus class="h-4 w-4" />
                         Create new Quiz
                     </Link>
@@ -188,7 +188,7 @@ const summaryStrip = computed(() => {
                         <Link
                             :href="
                                 route(
-                                    'courses.dashboard.indexQuizzes',
+                                    'instructor.courses.dashboard.indexQuizzes',
                                     props.course.id,
                                 )
                             "

@@ -45,7 +45,7 @@ watchDebounced(
     () => filters.search,
     () => {
         router.get(
-            route('courses.questions.index', props.course.id),
+            route('instructor.courses.questions.index', props.course.id),
             filters,
             {
                 preserveState: true,
@@ -93,7 +93,7 @@ function clearFilters() {
             </div>
             <div class="flex items-center gap-2 w-full sm:w-auto">
                 <Button as-child class="w-full sm:w-auto justify-center">
-                    <Link :href="route('courses.questions.create', course.id)">
+                    <Link :href="route('instructor.courses.questions.create', course.id)">
                         <Plus class="mr-2 h-4 w-4" />
                         Create new Question
                     </Link>
@@ -104,8 +104,8 @@ function clearFilters() {
         <!-- Search and filtering section -->
         <section class="w-full flex flex-col gap-4 p-4 border rounded-lg md:flex-row md:items-center md:justify-between">
             <InputGroup class="w-full md:max-w-sm">
-                <InputGroupInput 
-                    v-model="filters.search" 
+                <InputGroupInput
+                    v-model="filters.search"
                     placeholder="Search for title or keyword..."
                 />
                 <InputGroupAddon>
@@ -154,7 +154,7 @@ function clearFilters() {
         </section>
 
         <div class="flex justify-center gap-2 mt-8">
-            <Link 
+            <Link
                 v-for="link in questions.links"
                 :key="link.label"
                 :href="link.url ?? ''"

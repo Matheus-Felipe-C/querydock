@@ -29,7 +29,7 @@ const form = useForm({
 
 const save = () => {
     form.put(
-        route('courses.questions.update', {
+        route('instructor.courses.questions.update', {
             course: props.course.id,
             question: props.question.id,
         })

@@ -30,7 +30,7 @@ function changeSort(sort: AcceptableValue) {
     }
 
     router.get(
-        route('courses.datasets.index', props.course.id),
+        route('instructor.courses.datasets.index', props.course.id),
         { sort },
         {
             preserveState: true,
@@ -52,7 +52,7 @@ function changeSort(sort: AcceptableValue) {
 
             <div class="flex items-center gap-2 w-full sm:w-auto">
                 <Button as-child class="w-full sm:w-auto justify-center">
-                    <Link :href="route('courses.datasets.create', course.id)">
+                    <Link :href="route('instructor.courses.datasets.create', course.id)">
                         <Plus class=" mr-2 w-4 h-4" />
                         Create new Dataset
                     </Link>

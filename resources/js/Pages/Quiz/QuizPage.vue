@@ -63,7 +63,7 @@ function applyFilters(immediate = false) {
 
     const executeRequest = () => {
         router.get(
-            route('courses.quizzes.index', props.course.id),
+            route('instructor.courses.quizzes.index', props.course.id),
             { ...filterForm },
             { preserveState: true, replace: true }
         );
@@ -94,7 +94,7 @@ function changeSort(sort: AcceptableValue) {
 
 function handlePageChange(page: number) {
     router.get(
-        route('courses.quizzes.index', props.course.id),
+        route('instructor.courses.quizzes.index', props.course.id),
         {
             ...props.filters,
             page: page,
@@ -118,8 +118,8 @@ function handlePageChange(page: number) {
             </div>
             <div class="flex items-center gap-2 w-full sm:w-auto">
                 <Button class="w-full sm:w-auto justify-center" as-child>
-                    <Link :href="route('courses.quizzes.create', course.id )">
-                        <Plus class="w-4 h-4" /> 
+                    <Link :href="route('instructor.courses.quizzes.create', course.id )">
+                        <Plus class="w-4 h-4" />
                         Create new Quiz
                     </Link>
                 </Button>
@@ -188,7 +188,7 @@ function handlePageChange(page: number) {
         <!-- Pagination controls -->
         <div v-if="props.quizzes.total > props.quizzes.per_page" class="flex justify-center pt-6">
             <Pagination
-                :total="props.quizzes.total" 
+                :total="props.quizzes.total"
                 :items-per-page="props.quizzes.per_page"
                 :sibling-count="1"
                 :default-page="props.quizzes.current_page"

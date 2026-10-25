@@ -4,6 +4,7 @@ use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use \App\Http\Middleware\EnsureInstructor;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        
+
         //Appends Inertia to web middleware to render SPA pages
         $middleware->web(append: [
             HandleInertiaRequests::class,
@@ -23,6 +24,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->preventRequestForgery(except: [
             'lti',
             'lti/*',
+        ]);
+
+        $middleware->alias([
+            'lti.auth' => EnsureInstructor::class,
+            'instructor' => EnsureInstructor::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

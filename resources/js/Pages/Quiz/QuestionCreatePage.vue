@@ -24,7 +24,7 @@ const form = useForm({
 })
 
 function save() {
-    form.post(route('courses.questions.store', {
+    form.post(route('instructor.courses.questions.store', {
         course: props.course.id
     }))
 }

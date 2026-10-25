@@ -41,7 +41,7 @@ const props = defineProps<{
             <BreadcrumbList>
                 <BreadcrumbItem>
                     <BreadcrumbLink as-child>
-                        <Link :href="route('courses.dashboard', course.id)">
+                        <Link :href="route('instructor.courses.dashboard', course.id)">
                             Dashboard
                         </Link>
                     </BreadcrumbLink>

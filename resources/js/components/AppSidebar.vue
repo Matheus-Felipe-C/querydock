@@ -26,7 +26,7 @@ const navItems = computed(() => {
         {
             label: 'Dashboard',
             icon: LayoutDashboard,
-            name: 'courses.dashboard',
+            name: 'instructor.courses.dashboard',
             params: {
                 course: courseId,
             }
@@ -34,7 +34,7 @@ const navItems = computed(() => {
         {
             label: 'Quizzes',
             icon: BookOpen,
-            name: 'courses.quizzes.index',
+            name: 'instructor.courses.quizzes.index',
             params: {
                 course: courseId,
             }
@@ -42,7 +42,7 @@ const navItems = computed(() => {
         {
             label: 'Question Bank',
             icon: ListTodo,
-            name: 'courses.questions.index',
+            name: 'instructor.courses.questions.index',
             params: {
                 course: courseId,
             }
@@ -50,7 +50,7 @@ const navItems = computed(() => {
         {
             label: 'Datasets',
             icon: Database,
-            name: 'courses.datasets.index',
+            name: 'instructor.courses.datasets.index',
             params: {
                 course: courseId,
             }

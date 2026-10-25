@@ -19,17 +19,20 @@ Route::get('/', function () {
     ]);
 })->name('welcome');
 
-Route::get('/courses/{course}/dashboard', [DashboardController::class, 'show'])->name('courses.dashboard');
-Route::get('/courses/{course}/dashboard/quizzes', [DashboardController::class, 'indexQuizzes'])->name('courses.dashboard.indexQuizzes');
-
-// Route::get('/quiz', [QuizController::class, 'index'])->name('quiz');
-
-Route::resource('courses.quizzes', QuizController::class)->scoped();
-Route::get('/courses/{course}/questions-picker', [QuestionBankController::class,'picker'])->name('courses.questions.picker');
-Route::resource('courses.questions', QuestionBankController::class)->scoped();
-Route::resource('courses.datasets', DatasetController::class)->scoped();
-Route::get('/courses/{course}/quizzes/{quiz}/dashboard', [QuizSummaryController::class, 'show'])
-    ->name('courses.quizzes.dashboard');
+// Routes that only instructors can access
+Route::middleware(['lti.auth', 'instructor'])
+    ->prefix('instructor')
+    ->name('instructor.')
+    ->group(function () {
+        Route::get('/courses/{course}/dashboard', [DashboardController::class, 'show'])->name('courses.dashboard');
+        Route::get('/courses/{course}/dashboard/quizzes', [DashboardController::class, 'indexQuizzes'])->name('courses.dashboard.indexQuizzes');
+        Route::resource('courses.quizzes', QuizController::class)->scoped();
+        Route::get('/courses/{course}/questions-picker', [QuestionBankController::class,'picker'])->name('courses.questions.picker');
+        Route::resource('courses.questions', QuestionBankController::class)->scoped();
+        Route::resource('courses.datasets', DatasetController::class)->scoped();
+        Route::get('/courses/{course}/quizzes/{quiz}/dashboard', [QuizSummaryController::class, 'show'])
+            ->name('courses.quizzes.dashboard');
+});
 
 // Public (LTI entry)
 Route::any('/lti', [App\Http\Controllers\LTIController::class, 'ltiMessage']);

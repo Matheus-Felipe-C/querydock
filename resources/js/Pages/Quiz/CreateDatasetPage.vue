@@ -20,14 +20,14 @@ const form = useForm({
 })
 
 function save() {
-    form.post(route('courses.datasets.store', {
+    form.post(route('instructor.courses.datasets.store', {
         course: props.course.id,
     }))
 }
 </script>
 
 <template>
-    <DatasetForm 
+    <DatasetForm
     :course="course"
     :form="form"
     @submit="save"

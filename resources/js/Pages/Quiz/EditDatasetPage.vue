@@ -23,7 +23,7 @@ const form = useForm({
 })
 
 function save() {
-    form.patch(route('courses.datasets.update', {
+    form.patch(route('instructor.courses.datasets.update', {
         course: props.course.id,
         dataset: props.dataset,
     }))
