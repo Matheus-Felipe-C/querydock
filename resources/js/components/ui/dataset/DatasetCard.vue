@@ -41,7 +41,7 @@ const sqlPreview = computed(() => {
 
 function deleteDataset() {
     router.delete(
-        route('courses.datasets.destroy', {
+        route('instructor.courses.datasets.destroy', {
             course: props.courseId,
             dataset: props.dataset,
         })
@@ -66,7 +66,7 @@ function deleteDataset() {
 
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem as-child>
-                                <Link :href="route('courses.datasets.edit', {
+                                <Link :href="route('instructor.courses.datasets.edit', {
                                     course: courseId,
                                     dataset: dataset,
                                 })">

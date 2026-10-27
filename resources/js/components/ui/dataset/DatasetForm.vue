@@ -47,7 +47,7 @@ const subtitle = computed(() => {
             <BreadcrumbList>
                 <BreadcrumbItem>
                     <BreadcrumbLink as-child>
-                        <Link :href="route('courses.datasets.index', course.id)">
+                        <Link :href="route('instructor.courses.datasets.index', course.id)">
                             Datasets
                         </Link>
                     </BreadcrumbLink>
@@ -55,7 +55,7 @@ const subtitle = computed(() => {
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                     <BreadcrumbPage>
-                        {{ mode === 'edit' 
+                        {{ mode === 'edit'
                             ? 'Edit Dataset'
                             : 'Create Dataset'}}
                     </BreadcrumbPage>
@@ -75,7 +75,7 @@ const subtitle = computed(() => {
 
             <div class="flex items-center gap-2 w-full sm:w-auto">
                 <Button variant="outline" as-child class="flex-1 sm:flex-initial justify-center">
-                    <Link :href="route('courses.datasets.index', course.id)">
+                    <Link :href="route('instructor.courses.datasets.index', course.id)">
                         Cancel
                     </Link>
                 </Button>
@@ -95,7 +95,7 @@ const subtitle = computed(() => {
                         <div class="flex flex-col gap-6">
                             <div class="grid gap-2">
                                 <Label>
-                                    Dataset Title 
+                                    Dataset Title
                                     <span class="text-red-700">*</span>
                                 </Label>
                                 <Input v-model="form.name" />

@@ -56,7 +56,7 @@ class DatasetController extends Controller
 
         $course->datasets()->create($validated);
 
-        return redirect()->route('courses.datasets.index', $course->id)->with('success','');
+        return redirect()->route('instructor.courses.datasets.index', $course->id)->with('success','');
     }
 
     public function edit(Course $course, Dataset $dataset)
@@ -77,13 +77,13 @@ class DatasetController extends Controller
 
         $dataset->update($validated);
 
-        return redirect()->route('courses.datasets.index', $course->id)->with('success', '');
+        return redirect()->route('instructor.courses.datasets.index', $course->id)->with('success', '');
     }
 
     public function destroy(Course $course, Dataset $dataset)
     {
         $dataset->delete();
 
-        return redirect()->route('courses.datasets.index', $course->id)->with('success','');
+        return redirect()->route('instructor.courses.datasets.index', $course->id)->with('success','');
     }
 }
