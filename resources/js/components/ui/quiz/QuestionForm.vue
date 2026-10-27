@@ -137,7 +137,7 @@ function clearDataset() {
             <BreadcrumbList>
                 <BreadcrumbItem>
                     <BreadcrumbLink as-child>
-                        <Link :href="route('courses.questions.index', course.id)">Question Bank</Link>
+                        <Link :href="route('instructor.courses.questions.index', course.id)">Question Bank</Link>
                     </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
@@ -162,7 +162,7 @@ function clearDataset() {
             </div>
             <div class="flex items-center gap-2 w-full sm:w-auto">
                 <Button variant="outline" as-child class="flex-1 sm:flex-initial justify-center">
-                    <Link :href="route('courses.questions.index', course.id)">
+                    <Link :href="route('instructor.courses.questions.index', course.id)">
                         Cancel
                     </Link>
                 </Button>

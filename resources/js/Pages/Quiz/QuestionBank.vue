@@ -61,7 +61,7 @@ watchDebounced(
 
 function applyFilters() {
     router.get(
-        route('courses.questions.index', props.course.id),
+        route('instructor.courses.questions.index', props.course.id),
         filters,
         {
             preserveState: true,

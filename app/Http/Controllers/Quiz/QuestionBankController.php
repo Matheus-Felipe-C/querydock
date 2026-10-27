@@ -100,7 +100,7 @@ class QuestionBankController extends Controller
 
         $course->questions()->create($validated);
 
-        return redirect()->route('courses.questions.index', $course);
+        return redirect()->route('instructor.courses.questions.index', $course);
     }
 
     public function edit(Course $course, Question $question) {
@@ -126,13 +126,13 @@ class QuestionBankController extends Controller
 
         $question->update($validated);
 
-        return redirect()->route('courses.questions.index', $course);
+        return redirect()->route('instructor.courses.questions.index', $course);
     }
 
     public function destroy(Request $request, Course $course, Question $question) {
         $question->delete();
 
-        return redirect()->route('courses.questions.index', $course);
+        return redirect()->route('instructor.courses.questions.index', $course);
     }
 
 }
