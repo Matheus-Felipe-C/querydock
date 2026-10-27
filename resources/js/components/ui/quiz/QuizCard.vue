@@ -30,7 +30,7 @@ const props = defineProps<{
 
 function deleteQuiz() {
     router.delete(
-        route('courses.quizzes.destroy', {
+        route('instructor.courses.quizzes.destroy', {
             course: props.courseId,
             quiz: props.quiz,
         })
@@ -58,7 +58,7 @@ function deleteQuiz() {
 
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem as-child>
-                                <Link :href="route('courses.quizzes.edit', {
+                                <Link :href="route('instructor.courses.quizzes.edit', {
                                     course: courseId,
                                     quiz
                                 })">
@@ -124,7 +124,7 @@ function deleteQuiz() {
             <div class="flex items-center gap-1">
                 <Button variant="ghost" size="sm">Preview</Button>
                 <Button size="sm" as-child>
-                    <Link :href="route('courses.quizzes.dashboard', [courseId, quiz])">
+                    <Link :href="route('instructor.courses.quizzes.dashboard', [courseId, quiz])">
                         Results
                     </Link>
                 </Button>

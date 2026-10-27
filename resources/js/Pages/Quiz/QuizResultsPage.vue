@@ -56,8 +56,8 @@ const summaryStrip = computed(() => {
     <div class="w-full mx-auto flex flex-col gap-2 px-4">
         <AppBreadcrumb
             :items="[
-                { label: 'Quizzes', href: route('courses.quizzes.index', course.id) },
-                { label: quiz.title, href: route('courses.quizzes.show', [course.id, quiz.id] ) },
+                { label: 'Quizzes', href: route('instructor.courses.quizzes.index', course.id) },
+                { label: quiz.title, href: route('instructor.courses.quizzes.show', [course.id, quiz.id] ) },
                 { label: 'Show quiz results' }
             ]"
         />

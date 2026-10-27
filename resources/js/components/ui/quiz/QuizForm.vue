@@ -72,7 +72,7 @@ function handleSubmit() {
             <BreadcrumbList>
                 <BreadcrumbItem>
                     <BreadcrumbLink as-child>
-                        <Link :href="route('courses.quizzes.index', course.id)">Quizzes</Link>
+                        <Link :href="route('instructor.courses.quizzes.index', course.id)">Quizzes</Link>
                     </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
@@ -97,7 +97,7 @@ function handleSubmit() {
             </div>
             <div class="flex items-center gap-2 w-full sm:w-auto">
                 <Button variant="outline" as-child class="flex-1 sm:flex-initial justify-center">
-                    <Link :href="route('courses.quizzes.index', course.id)">
+                    <Link :href="route('instructor.courses.quizzes.index', course.id)">
                         Cancel
                     </Link>
                 </Button>

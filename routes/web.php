@@ -31,7 +31,7 @@ Route::middleware(['lti.auth', 'instructor'])
         Route::resource('courses.questions', QuestionBankController::class)->scoped();
         Route::resource('courses.datasets', DatasetController::class)->scoped();
         Route::get('/courses/{course}/quizzes/{quiz}/dashboard', [QuizSummaryController::class, 'show'])
-            ->name('courses.quizzes.dashboard');
+            ->name('courses.dashboard');
 });
 
 // Public (LTI entry)

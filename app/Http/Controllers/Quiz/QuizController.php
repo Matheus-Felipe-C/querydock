@@ -74,7 +74,7 @@ class QuizController extends Controller
             }
         });
 
-        return redirect()->route('courses.quizzes.index', $course);
+        return redirect()->route('instructor.courses.quizzes.index', $course);
     }
 
     public function show(Course $course, Quiz $quiz)
@@ -134,13 +134,13 @@ class QuizController extends Controller
             $quiz->questions()->sync($syncData);
         });
 
-        return redirect()->route('courses.quizzes.index', $course);
+        return redirect()->route('instructor.courses.quizzes.index', $course);
     }
 
     public function destroy(Course $course, Quiz $quiz)
     {
         $quiz->delete();
 
-        return redirect()->route('courses.quizzes.index', $course);
+        return redirect()->route('instructor.courses.quizzes.index', $course);
     }
 }
