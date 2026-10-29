@@ -36,7 +36,7 @@ class QuestionBankController extends Controller
             $query->latest();
         }
 
-        return Inertia::render('Quiz/QuestionBank', [
+        return Inertia::render('QuizSelection/QuestionBank', [
             'course' => $course,
             'questions' => $query
                 ->paginate(12)
@@ -60,7 +60,7 @@ class QuestionBankController extends Controller
 
     public function create(Course $course)
     {
-        return Inertia::render('Quiz/QuestionCreatePage', [
+        return Inertia::render('QuizSelection/QuestionCreatePage', [
             'course' => $course,
             'datasets' => Dataset::select(['id', 'name', 'description'])
                 ->latest()
@@ -104,7 +104,7 @@ class QuestionBankController extends Controller
     }
 
     public function edit(Course $course, Question $question) {
-        return Inertia::render('Quiz/QuestionEditPage', [
+        return Inertia::render('QuizSelection/QuestionEditPage', [
             'course' => $course,
             'question' => $question,
             'datasets'  => Dataset::select(['id', 'name', 'description'])

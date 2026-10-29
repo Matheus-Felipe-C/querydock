@@ -41,7 +41,7 @@ const emit = defineEmits<{
 const pageTitle = computed(() => {
     return props.mode === 'edit'
         ? `Edit Quiz: ${props.form.title}`
-        : 'Create new Quiz';
+        : 'Create new QuizSelection';
 });
 
 const selectedQuestions = ref<QuizQuestion[]>(props.initialQuestions ?? []);
@@ -79,8 +79,8 @@ function handleSubmit() {
                 <BreadcrumbItem>
                     <BreadcrumbPage>
                         {{ mode === 'edit'
-                            ? 'Edit Quiz'
-                            : 'Create Quiz' }}
+                            ? 'Edit QuizSelection'
+                            : 'Create QuizSelection' }}
                     </BreadcrumbPage>
                 </BreadcrumbItem>
             </BreadcrumbList>
@@ -113,7 +113,7 @@ function handleSubmit() {
             </CardHeader>
             <CardContent class="space-y-6">
 
-                <!-- Quiz title + Time limit -->
+                <!-- QuizSelection title + Time limit -->
                 <div class=" grid grid-cols-3 gap-4">
                     <div class="col-span-2 space-y-2">
                         <Label>

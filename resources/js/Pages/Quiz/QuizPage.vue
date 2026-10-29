@@ -161,7 +161,7 @@ function handlePageChange(page: number) {
             </div>
         </section>
 
-        <!-- Quiz cards -->
+        <!-- QuizSelection cards -->
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <!-- Change this later to quizzes.length === 0, just changed this to make it easier to test out the design without a major refactor -->
             <div v-if="!course.id" class="col-span-1 sm:col-span-2 lg:col-span-3 text-center py-12 text-muted-foreground">

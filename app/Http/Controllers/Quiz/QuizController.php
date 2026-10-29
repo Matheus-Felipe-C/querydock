@@ -22,7 +22,7 @@ class QuizController extends Controller
             ->paginate(9)
             ->withQueryString();
 
-        return Inertia::render('Quiz/QuizPage', [
+        return Inertia::render('QuizSelection/QuizPage', [
             'course' => $course,
             'quizzes' => $query,
             'filters' => $filters,
@@ -31,7 +31,7 @@ class QuizController extends Controller
 
     public function create(Course $course)
     {
-        return Inertia::render('Quiz/QuizCreatePage', [
+        return Inertia::render('QuizSelection/QuizCreatePage', [
             'course' => $course,
         ]);
     }
@@ -79,7 +79,7 @@ class QuizController extends Controller
 
     public function show(Course $course, Quiz $quiz)
     {
-        return Inertia::render('Quiz/QuizResultsPage', [
+        return Inertia::render('QuizSelection/QuizResultsPage', [
             'course' => $course,
             'quiz' => $quiz,
         ]);
@@ -92,7 +92,7 @@ class QuizController extends Controller
             $query->orderBy('question_quiz.position', 'asc');
         }]);
 
-        return Inertia::render('Quiz/QuizEditPage', [
+        return Inertia::render('QuizSelection/QuizEditPage', [
             'course' => $course,
             'quiz' => $quiz,
         ]);

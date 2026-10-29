@@ -40,7 +40,7 @@ const instructionsId = useId();
         </CardHeader>
         <CardContent class="space-y-6">
 
-          <!-- Quiz title + Time limit -->
+          <!-- QuizSelection title + Time limit -->
           <div class=" grid grid-cols-3 gap-4">
             <div class="col-span-2 space-y-2">
               <Label :for="quizTitleId">

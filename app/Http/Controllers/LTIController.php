@@ -81,6 +81,9 @@ class LTIController extends Controller
             ->orderBy('title')
             ->get();
 
-        return Inertia::render('Instructor/Quiz/QuizSelectionPage');
+        return Inertia::render('Instructor/QuizSelection/QuizSelectionPage', [
+            'quizzes' => $quizzes,
+            'course' => $course,
+        ]);
     }
 }
