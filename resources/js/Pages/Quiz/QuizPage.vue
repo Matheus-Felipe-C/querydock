@@ -22,6 +22,7 @@ import { ListFilter, Plus } from 'lucide-vue-next';
 import { AcceptableValue, PaginationList, PaginationListItem } from 'reka-ui';
 import { reactive, watch } from 'vue';
 import { route } from 'ziggy-js';
+import PageHeader from "@/components/PageHeader.vue";
 
 defineOptions({
     layout: AppLayout,
@@ -109,22 +110,14 @@ function handlePageChange(page: number) {
 
 <template>
     <div class="w-full mx-auto flex flex-col gap-6 py-4 px-6 md:px-0">
-        <section class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-                <h1 class="text-xl font-bold md:text-2xl">Quizzes</h1>
-                <p class="text-sm text-muted-foreground">
-                    Manage your SQL assessments, monitor student performance and draft new curriculum logic.
-                </p>
-            </div>
-            <div class="flex items-center gap-2 w-full sm:w-auto">
-                <Button class="w-full sm:w-auto justify-center" as-child>
-                    <Link :href="route('instructor.courses.quizzes.create', course.id )">
-                        <Plus class="w-4 h-4" />
-                        Create new Quiz
-                    </Link>
-                </Button>
-            </div>
-        </section>
+        <PageHeader title="Quizzes" description="Manage your SQL assessments, monitor student performance and draft new curriculum logic.">
+            <Button class="w-full sm:w-auto justify-center" as-child>
+                <Link :href="route('instructor.courses.quizzes.create', course.id )">
+                    <Plus class="w-4 h-4" />
+                    Create new Quiz
+                </Link>
+            </Button>
+        </PageHeader>
 
         <!-- Search and filtering -->
         <section class="w-full flex flex-col gap-4 py-4 border rounded-lg lg:flex-row lg:items-center lg:justify-between">
