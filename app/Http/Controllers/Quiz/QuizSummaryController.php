@@ -17,7 +17,7 @@ class QuizSummaryController extends Controller
     {
         $data = $this->quizSummaryService->getQuizData($quiz);
 
-        return Inertia::render('QuizSelection/QuizResultsPage', [
+        return Inertia::render('Quiz/QuizResultsPage', [
             'course' => $course,
             'quiz' => $quiz,
             'quizSummary' => $data

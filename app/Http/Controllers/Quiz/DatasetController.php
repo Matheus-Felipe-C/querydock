@@ -32,7 +32,7 @@ class DatasetController extends Controller
                 break;
         }
 
-        return Inertia::render('QuizSelection/DatasetPage', [
+        return Inertia::render('Quiz/DatasetPage', [
             'course' => $course,
             'datasets' => $query->get(),
             'sort' => $sort,
@@ -41,7 +41,7 @@ class DatasetController extends Controller
 
     public function create(Course $course)
     {
-        return Inertia::render('QuizSelection/CreateDatasetPage',[
+        return Inertia::render('Quiz/CreateDatasetPage',[
             'course' => $course,
         ]);
     }
@@ -61,7 +61,7 @@ class DatasetController extends Controller
 
     public function edit(Course $course, Dataset $dataset)
     {
-        return Inertia::render('QuizSelection/EditDatasetPage', [
+        return Inertia::render('Quiz/EditDatasetPage', [
             'course' => $course,
             'dataset' => $dataset,
         ]);

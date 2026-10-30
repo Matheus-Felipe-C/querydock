@@ -12,28 +12,28 @@ class DevController extends Controller
 {
     public function questionBank()
     {
-        return Inertia::render('QuizSelection/QuestionBank', [
+        return Inertia::render('Quiz/QuestionBank', [
             'course' => $this->fakeCourse(),
             'questions' => Question::factory()->count(15)->make(),
         ]);
     }
 
     public function editQuestion() {
-        return Inertia::render('QuizSelection/QuestionEditPage', [
+        return Inertia::render('Quiz/QuestionEditPage', [
             'course' => $this->fakeCourse(),
             'questions' => Question::factory()->make(),
         ]);
     }
 
     public function listDataset() {
-        return Inertia::render('QuizSelection/DatasetPage', [
+        return Inertia::render('Quiz/DatasetPage', [
             'course' => $this->fakeCourse(),
             'datasets' => Dataset::factory()->count(15)->make(),
         ]);
     }
 
     public function editDataset() {
-        return Inertia::render('QuizSelection/CreateDatasetPage', [
+        return Inertia::render('Quiz/CreateDatasetPage', [
             'course' => $this->fakeCourse(),
         ]);
     }

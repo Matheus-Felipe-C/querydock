@@ -3,12 +3,15 @@
 import PageHeader from "@/components/PageHeader.vue";
 import {Quiz} from "@/types/quiz.ts";
 import {Course} from "@/types/course.ts";
-import QuizCard from "@/components/ui/quiz/QuizCard.vue";
+import QuizCardSelection from "@/Pages/Instructor/QuizSelection/QuizCardSelection.vue";
+import {ref} from "vue";
 
 defineProps<{
     quizzes: Quiz[],
     course: Course,
 }>();
+
+const selectedQuizId = ref<number | null>(null);
 </script>
 
 <template>
@@ -24,11 +27,13 @@ defineProps<{
                 <p class="text-sm">Create your first quiz to get started.</p>
             </div>
             <template v-else>
-                <QuizCard
+                <QuizCardSelection
                     v-for="quiz in quizzes"
                     :key="quiz.id"
                     :quiz="quiz"
-                    :course-id="course.id"
+                    :course="course"
+                    :selected="selectedQuizId == quiz.id"
+                    @select="selectedQuizId = quiz.id"
                 />
             </template>
         </div>

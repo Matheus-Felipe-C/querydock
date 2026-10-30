@@ -16,7 +16,10 @@ defineEmits<{
 </script>
 
 <template>
-    <Card class="flex flex-col justify-between">
+    <Card
+        @click="$emit('select')"
+        class="flex flex-col justify-between"
+    >
         <CardHeader>
             <CardTitle>{{ quiz.title }}</CardTitle>
         </CardHeader>
