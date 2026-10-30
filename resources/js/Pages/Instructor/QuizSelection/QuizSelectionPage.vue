@@ -5,6 +5,7 @@ import {Quiz} from "@/types/quiz.ts";
 import {Course} from "@/types/course.ts";
 import QuizCardSelection from "@/Pages/Instructor/QuizSelection/QuizCardSelection.vue";
 import {ref} from "vue";
+import {Button} from "@/components/ui/button";
 
 defineProps<{
     quizzes: Quiz[],
@@ -37,5 +38,15 @@ const selectedQuizId = ref<number | null>(null);
                 />
             </template>
         </div>
+
+        <footer class="fixed inset-x-0 bottom-0 z-50 border bg-background p-4">
+            <div class="mx-auto flex max-w-7xl justify-end">
+                <Button
+                    :disabled="selectedQuizId == null"
+                >
+                    Add quiz to activity
+                </Button>
+            </div>
+        </footer>
     </div>
 </template>
