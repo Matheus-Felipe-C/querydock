@@ -65,7 +65,7 @@ const currentDifficulty = computed(() => {
             <div class="flex justify-between">
                 <CardTitle>{{ question.title }}</CardTitle>
 
-                <Badge 
+                <Badge
                     :class="['px-2 py-1 transition-colors uppercase', currentDifficulty.className]"
                 >
                     {{ currentDifficulty.label }}
@@ -118,7 +118,7 @@ const currentDifficulty = computed(() => {
                             </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialog>
-                    <Link :href="route('courses.questions.edit', {
+                    <Link :href="route('instructor.courses.questions.edit', {
                         course: courseId,
                         question: question.id,
                     })">
