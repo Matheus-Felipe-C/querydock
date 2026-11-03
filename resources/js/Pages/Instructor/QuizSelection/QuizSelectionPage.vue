@@ -6,6 +6,8 @@ import {Course} from "@/types/course.ts";
 import QuizCardSelection from "@/Pages/Instructor/QuizSelection/QuizCardSelection.vue";
 import {ref} from "vue";
 import {Button} from "@/components/ui/button";
+import {route} from "ziggy-js";
+import {router} from "@inertiajs/vue3";
 
 defineProps<{
     quizzes: Quiz[],
@@ -13,6 +15,25 @@ defineProps<{
 }>();
 
 const selectedQuizId = ref<number | null>(null);
+const isSubmitting = ref(false);
+
+function addQuizToActivity() {
+    if (selectedQuizId.value == null || isSubmitting.value) {
+        return;
+    }
+
+    isSubmitting.value = true;
+
+    router.post(
+        route('instructor.lti.deep-link.store'),
+        { quiz_id: selectedQuizId.value },
+        {
+            onFinish: () => {
+                isSubmitting.value = true;
+            },
+        }
+    );
+}
 </script>
 
 <template>
@@ -43,8 +64,9 @@ const selectedQuizId = ref<number | null>(null);
             <div class="mx-auto flex max-w-7xl justify-end">
                 <Button
                     :disabled="selectedQuizId == null"
+                    @click="addQuizToActivity"
                 >
-                    Add quiz to activity
+                    {{ isSubmitting ? 'Adding...' : 'Add quiz to activity'}}
                 </Button>
             </div>
         </footer>

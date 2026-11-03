@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\Dashboard\DashboardController;
-use App\Http\Controllers\DevController;
+use App\Http\Controllers\LTIController;
 use App\Http\Controllers\Quiz\DatasetController;
 use App\Http\Controllers\Quiz\QuestionBankController;
 use App\Http\Controllers\Quiz\QuizController;
@@ -32,7 +32,16 @@ Route::middleware(['lti.auth', 'instructor'])
         Route::resource('courses.datasets', DatasetController::class)->scoped();
         Route::get('/courses/{course}/quizzes/{quiz}/dashboard', [QuizSummaryController::class, 'show'])
             ->name('courses.quizzes.dashboard');
-});
+
+        Route::post('/lti/deep-link', [LTIController::class, 'storeDeepLink'])->name('lti.deep-link.store');
+    });
+
+Route::middleware(['lti.auth', 'student'])
+    ->prefix('student')
+    ->name('student.')
+    ->group(function () {
+
+    });
 
 // Public (LTI entry)
 Route::any('/lti', [App\Http\Controllers\LTIController::class, 'ltiMessage']);
