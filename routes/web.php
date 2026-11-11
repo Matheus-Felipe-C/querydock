@@ -7,6 +7,7 @@ use App\Http\Controllers\Quiz\DatasetController;
 use App\Http\Controllers\Quiz\QuestionBankController;
 use App\Http\Controllers\Quiz\QuizController;
 use App\Http\Controllers\Quiz\QuizSummaryController;
+use App\Http\Controllers\Quiz\StudentQuizController;
 use App\Http\Middleware\EnsureLTISession;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -40,12 +41,15 @@ Route::middleware(['lti.auth', 'student'])
     ->prefix('student')
     ->name('student.')
     ->group(function () {
-
+        Route::get('/courses/{course}/quizzes/{quiz}', [StudentQuizController::class, 'show'])
+            ->scopeBindings()
+            ->name('courses.quizzes.show');
     });
 
 // Public (LTI entry)
 Route::any('/lti', [App\Http\Controllers\LTIController::class, 'ltiMessage']);
 Route::get('/lti/jwks', [App\Http\Controllers\LTIController::class, 'getJWKS']);
+Route::get('/.well-known/jwks.json', [App\Http\Controllers\LTIController::class, 'getJWKS']);
 
 //General app route for now
 Route::get('/app', [AppController::class, 'index'])

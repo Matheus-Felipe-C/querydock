@@ -28,8 +28,8 @@ return [
     'lti13' => [
         'signature_method' => env('LTI13_SIGNATURE_METHOD', 'RS256'),
         'key_id' => env('LTI13_KEY_ID', 'key-1'),
-        'rsa_public_key' => env('LTI13_RSA_PUBLIC_KEY'),
-        'rsa_private_key' => env('LTI13_RSA_PRIVATE_KEY'),
+        'rsa_public_key' => env('LTI13_RSA_PUBLIC_KEY') ? implode("\n", array_map('trim', explode("\n", env('LTI13_RSA_PUBLIC_KEY')))) : null,
+        'rsa_private_key' => env('LTI13_RSA_PRIVATE_KEY') ? implode("\n", array_map('trim', explode("\n", env('LTI13_RSA_PRIVATE_KEY')))) : null,
         'auto_register_deployment_id' => env('LTI13_AUTO_REGISTER_DEPLOYMENT_ID', false),
         'required_scopes' => [
             // sample scope URLs

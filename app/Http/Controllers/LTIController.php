@@ -42,6 +42,20 @@ class LTIController extends Controller
                 'lti_role' => $role,
                ]);
 
+               $quizId = $tool->getMessageParameters()['custom_quiz_id'] ?? null;
+
+               $quiz = ($quizId && $course)
+                   ? Quiz::where('id', $quizId)->where('course_id', $course->id)->first()
+                   : null;
+
+               if ($quiz) {
+                   $isInstructor = in_array($role, ['instructor', 'teacher'], true);
+
+                   return $isInstructor
+                       ? redirect()->route('instructor.courses.quizzes.dashboard', [$course, $quiz])
+                       : redirect()->route('student.courses.quizzes.show', [$course, $quiz]);
+               }
+
                 return redirect('/app');
             }
 
@@ -107,6 +121,8 @@ class LTIController extends Controller
         $platform = Platform::fromRecordId($deepLink['platform_record_id'], $tool->getDataConnector());
         $version = $platform->ltiVersion ?? LtiVersion::V1P3;
 
+        $tool->platform = $platform;
+
         $item = new LtiLinkItem();
         $item->setTitle($quiz->title);
         $item->setUrl(url('/lti'));
@@ -118,21 +134,14 @@ class LTIController extends Controller
             $formParams['data'] = $deepLink['data'];
         }
 
-        $signed = $platform->signParameters(
+        $signed = $tool->signParameters(
             $deepLink['return_url'],
             'LtiDeepLinkingResponse',
             $version->value,
             $formParams,
         );
 
-        logger()->info('deep link signed', [
-            'version'  => $version->value,
-            'platform_ltiVersion' => $platform->ltiVersion?->value,
-            'keys'     => array_keys($signed),
-            'return_url' => $deepLink['return_url'],
-        ]);
-
-        abort_unless(is_array($signed), 500, 'Unexpected signing result.');
+        abort_unless(is_array($signed) && isset($signed['JWT']), 500, 'Signing failed: ' . ($tool->reason ?? 'No JWT generated'));
 
         session()->forget('lti_deep_link');
 
