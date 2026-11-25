@@ -5,6 +5,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use \App\Http\Middleware\EnsureInstructor;
+use \App\Http\Middleware\EnsureLTISession;
+use \App\Http\Middleware\EnsureStudent;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -27,8 +29,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->alias([
-            'lti.auth' => EnsureInstructor::class,
+            'lti.auth' => EnsureLTISession::class,
             'instructor' => EnsureInstructor::class,
+            'student' => EnsureStudent::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
