@@ -13,6 +13,8 @@ class StudentQuizController extends Controller
     {
         abort_unless((int) session('course_id') === $course->id, 403);
 
+        $quiz->load(['questions' => fn ($q) => $q->orderBy('question_quiz.position', 'asc')]);
+
         return Inertia::render('Student/QuizAttempt/QuizAttemptPage', [
             'course' => $course,
             'quiz' => $quiz,

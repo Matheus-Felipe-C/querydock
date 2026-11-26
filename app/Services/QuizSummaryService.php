@@ -16,9 +16,9 @@ class QuizSummaryService
         $completed = $submissions->where('status', SubmissionStatus::Completed);
 
         return [
-            'submission_count' => $submissions->count(),
+            'submissions_count' => $submissions->count(),
             'avg_score' => $completed->avg('score'),
-            'median_score' => $completed->median('median_score'),
+            'median_score' => $completed->median('score'),
             'avg_completion_seconds' => $completed
                 ->map(fn ($s) => $s->completionSeconds())
                 ->filter()
@@ -29,7 +29,7 @@ class QuizSummaryService
     public function getRecentSubmissions(Quiz $quiz, int $limit = 10): Collection
     {
         return $quiz->submissions()
-            ->with(['student:id, name', 'grader:id, name'])
+            ->with(['student:id,name', 'grader:id,name'])
             ->latest('updated_at')
             ->limit($limit)
             ->get();

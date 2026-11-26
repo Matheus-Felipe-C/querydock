@@ -8,11 +8,13 @@ const props = defineProps<{
 }>();
 
 const questions = props.quiz.questions;
-const currentQuestion = questions[0];
+const currentQuestion = questions?.[0] ?? null;
 </script>
 
 <template>
-<h1>{{currentQuestion.title}}</h1>
+    <div v-if="currentQuestion">
+        <h1>{{currentQuestion.title}}</h1>
+    </div>
 </template>
 
 <style scoped>

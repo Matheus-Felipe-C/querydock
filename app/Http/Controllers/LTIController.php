@@ -96,6 +96,7 @@ class LTIController extends Controller
         ]);
 
         $quizzes = Quiz::query()
+            ->when($course, fn ($q) => $q->where('course_id', $course->id))
             ->select('id', 'title')
             ->orderBy('title')
             ->get();

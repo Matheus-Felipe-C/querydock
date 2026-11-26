@@ -31,7 +31,7 @@ Route::middleware(['lti.auth', 'instructor'])
         Route::get('/courses/{course}/questions-picker', [QuestionBankController::class,'picker'])->name('courses.questions.picker');
         Route::resource('courses.questions', QuestionBankController::class)->scoped();
         Route::resource('courses.datasets', DatasetController::class)->scoped();
-        Route::get('/courses/{course}/quizzes/{quiz}/dashboard', [QuizSummaryController::class, 'show'])
+        Route::get('/courses/{course}/quizzes/{quiz}/dashboard', [QuizSummaryController::class, 'show'])->scopeBindings()
             ->name('courses.quizzes.dashboard');
 
         Route::post('/lti/deep-link', [LTIController::class, 'storeDeepLink'])->name('lti.deep-link.store');

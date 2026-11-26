@@ -29,7 +29,7 @@ function addQuizToActivity() {
         { quiz_id: selectedQuizId.value },
         {
             onFinish: () => {
-                isSubmitting.value = true;
+                isSubmitting.value = false;
             },
         }
     );

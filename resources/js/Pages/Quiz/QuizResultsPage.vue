@@ -45,7 +45,7 @@ const summaryStrip = computed(() => {
 
         {
             title: 'Avg completion time',
-            value: avgCompletionMinutes,
+            value: avgCompletionMinutes.value,
             details: ''
         }
     ]
